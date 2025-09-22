@@ -8,16 +8,9 @@ io_status read_array(data *arr, int n, const char *name)
 
 	for (int i = 0; i < n; i++) 
 	{
-		int len, c;
-		if (!fscanf(fp, "%d", &len)) {
-			fclose(fp);
-			return ERROR_READ;
-		}
+		int c;
 
-		arr[i].set_m(len);
-		c = arr[i].read(fp);
-		
-		if (c < 0) {
+		if (arr[i].read(fp) < 0) {
 			fclose(fp);
 			return ERROR_READ;
 		}

@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	data::set_p(p);
 	
 	x_name = argv[1];
-	if (!(fp = fopen("r", x_name))) {
+	if (!(fp = fopen(x_name, "r"))) {
 		fprintf (stderr, "Cannot open %s\n", x_name);
 		return 3;
 	}

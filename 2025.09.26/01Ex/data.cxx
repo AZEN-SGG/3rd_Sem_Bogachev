@@ -3,12 +3,17 @@
 
 int data::read (FILE *fp)
 {
-	int len = ((m < M) ? m : M);
-	for (int j = 0; j < len; ++j)
+	if (fscanf(fp, "%d", &m) != 1) {
+		return -1;
+	}
+	
+	m = get_M();
+
+	for (int j = 0; j < m; ++j)
 		if (!fscanf(fp, "%lf", a + j))
 			return -1;
 
-	return len;
+	return m;
 }
 
 
