@@ -1,9 +1,9 @@
 #include "data.h"
 
 
-int data::read (FILE *fp = stdin)
+int data::read (FILE *fp)
 {
-	int len = (m < M : m ? M);
+	int len = ((m < M) ? m : M);
 	for (int j = 0; j < len; ++j)
 		if (!fscanf(fp, "%lf", a + j))
 			return -1;

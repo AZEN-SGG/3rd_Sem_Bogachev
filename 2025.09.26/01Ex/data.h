@@ -36,7 +36,7 @@ class data
 			fprintf(fp, "%d", m);
 			if (len > p) len = p;
 			for (i = 0; i < len; ++i)
-				fprintf(fpm " %le", a[i]);
+				fprintf(fp, " %le", a[i]);
 			fprintf(fp, "\n");
 		}
 
