@@ -26,9 +26,9 @@ int main(int argc, char *argv[])
 		&& sscanf(argv[3], "%d", &s_a) == 1 
 		&& sscanf(argv[4+!s_a], "%d", &m) == 1 && m > 0
 		&& sscanf(argv[5+!s_a], "%d", &p_b) == 1 
-		&& sscanf(argv[6+!s_a], "%d", &s_b) == 1 
+		&& sscanf(argv[6+(!s_a)*(argc>=8)], "%d", &s_b) == 1 
 		&& (((7 + !s_a + !s_b) == argc)
-		|| ((s_a > 0 && s_b > 0) && (s_a < 5 && s_b < 5))))
+		&& ((s_a >= 0 && s_b >= 0) && (s_a < 5 && s_b < 5))))
 	) {
 		printf("Usage %s n p_a s_a name_a m p_b s_b name_b\n", argv[0]);
 		return 1;
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 		return 2;
 	}
 
-	if (	init_array(arr_a, n, s_a, s_a ? nullptr : argv[5])
+	if (	init_array(arr_a, n, s_a, s_a ? nullptr : argv[4])
 		|| init_array(arr_b, m, s_b, s_b ? nullptr : argv[6+!s_a+!s_b]) 
 	) {
 		delete[] arr_a;
