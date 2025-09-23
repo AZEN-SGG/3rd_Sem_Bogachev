@@ -5,6 +5,7 @@
 
 #include <utility>
 
-void t4_solve(data *arr, int n);
+void t5_solve(data *arr, int n);
+int minimum(data *a, int n);
 
 #endif

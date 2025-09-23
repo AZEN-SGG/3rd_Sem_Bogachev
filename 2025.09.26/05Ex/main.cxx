@@ -12,8 +12,8 @@ int data::p = 0;
 
 int main(int argc, char *argv[])
 {
-	/* ./a04.out n p s [filename] */
-	int n, p, s, diff, task = 4;
+	/* ./a05.out n p s [filename] */
+	int n, p, s, diff, task = 5;
 	data *arr = 0;
 	double t;
 
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 	print_array(arr, n, p);
 
 	t = clock();
-	t4_solve(arr, n);
+	t5_solve(arr, n);
 	t = (clock() - t) / CLOCKS_PER_SEC;
 	
 	diff = diff_array(arr, n);
