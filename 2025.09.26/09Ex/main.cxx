@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 		} while (0);
 	} else
 		for (int i = 0; i < n; ++i)
-			arr[i].init(s, n, i);
+			arr[i].init(s, n, i+1);
 
 	printf ("Source array:\n");
 	print_array(arr, n, p);

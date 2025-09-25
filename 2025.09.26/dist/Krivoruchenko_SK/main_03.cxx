@@ -1,4 +1,4 @@
-#include "solve.h"
+#include "solve_03.h"
 #include "data.h"
 #include "array.h"
 #include "io_status.h"
@@ -12,20 +12,22 @@ int data::p = 0;
 
 int main(int argc, char *argv[])
 {
-	/* ./a07.out n p s [filename] */
-	int n, p, s, diff, task = 7;
+	/* ./a03.out m n p s [filename] */
+	int m, n, p, s, res, task = 3;
 	data *arr = 0;
 	double t;
 
 	if (
-		!((argc == 4 || argc == 5)
-		&& sscanf(argv[1], "%d", &n) == 1 && n > 0 
-		&& sscanf(argv[2], "%d", &p) == 1 
-		&& sscanf(argv[3], "%d", &s) == 1 
-		&& (((s == 0) && (argc == 5))
+		!((argc == 5 || argc == 6)
+		&& sscanf(argv[1], "%d", &m) == 1 
+		&& sscanf(argv[2], "%d", &n) == 1 && n > 0 
+		&& (0 <= m && m < n)
+		&& sscanf(argv[3], "%d", &p) == 1 
+		&& sscanf(argv[4], "%d", &s) == 1 
+		&& (((s == 0) && (argc == 6))
 		|| ((s > 0) && (s < 5))))
 	) {
-		printf("Usage %s n p s name\n", argv[0]);
+		printf("Usage %s m n p s name\n", argv[0]);
 		return 1;
 	}
 
@@ -38,7 +40,7 @@ int main(int argc, char *argv[])
 	}
 
 	if (s == 0) {
-		char *name = argv[4];
+		char *name = argv[5];
 		io_status ret = read_array(arr, n, name);
 		do {
 			switch(ret)
@@ -61,22 +63,20 @@ int main(int argc, char *argv[])
 			return 3;
 		} while (0);
 	} else
-		for (int i = 0; i < n; ++i)
-			arr[i].init(s, n, i+1);
+		for (int i = 1; i <= n; ++i)
+			arr[i-1].init(s, n, i);
 
 	printf ("Source array:\n");
 	print_array(arr, n, p);
 
 	t = clock();
-	t7_solve(arr, n);
+	res = t3_solve(arr, n, m);
 	t = (clock() - t) / CLOCKS_PER_SEC;
-	
-	diff = diff_array(arr, n);
 
 	printf ("New array:\n");
 	print_array(arr, n, p);
 
-	printf("%s : Task = %d Diff = %d Elapsed = %.2f\n", argv[0], task, diff, t);
+	printf("%s : Task = %d Res = %d Elapsed = %.2f\n", argv[0], task, res, t);
 	
 	delete[] arr;
 

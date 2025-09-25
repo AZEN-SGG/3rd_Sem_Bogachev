@@ -1,4 +1,4 @@
-#include "solve.h"
+#include "solve_08.h"
 #include "data.h"
 #include "array.h"
 #include "io_status.h"
@@ -12,10 +12,12 @@ int data::p = 0;
 
 int main(int argc, char *argv[])
 {
-	/* ./a07.out n p s [filename] */
-	int n, p, s, diff, task = 7;
-	data *arr = 0;
+	/* ./a08.out n p s [filename] */
+	int n, p, s, diff, task = 8;
+	data *arr_a, *arr_b;
 	double t;
+
+	arr_a=arr_b=nullptr;
 
 	if (
 		!((argc == 4 || argc == 5)
@@ -31,15 +33,23 @@ int main(int argc, char *argv[])
 
 	data::set_p(p);
 	
-	try	{ arr = new data[n]; }
+	try	{ arr_a = new data[n]; }
 	catch (const std::bad_alloc& e) {
+		fprintf (stderr, "Not enough memory!\n");
+		return 2;
+	}
+
+	try	{ arr_b = new data[n]; }
+	catch (const std::bad_alloc& e) {
+		delete[] arr_a;
+
 		fprintf (stderr, "Not enough memory!\n");
 		return 2;
 	}
 
 	if (s == 0) {
 		char *name = argv[4];
-		io_status ret = read_array(arr, n, name);
+		io_status ret = read_array(arr_a, n, name);
 		do {
 			switch(ret)
 			{
@@ -56,29 +66,31 @@ int main(int argc, char *argv[])
 					break;
 			}
 			
-			delete[] arr;
+			delete[] arr_a;
+			delete[] arr_b;
 
 			return 3;
 		} while (0);
 	} else
 		for (int i = 0; i < n; ++i)
-			arr[i].init(s, n, i+1);
+			arr_a[i].init(s, n, i+1);
 
 	printf ("Source array:\n");
-	print_array(arr, n, p);
+	print_array(arr_a, n, p);
 
 	t = clock();
-	t7_solve(arr, n);
+	t8_solve(arr_a, arr_b, n);
 	t = (clock() - t) / CLOCKS_PER_SEC;
 	
-	diff = diff_array(arr, n);
+	diff = diff_array(arr_a, n);
 
 	printf ("New array:\n");
-	print_array(arr, n, p);
+	print_array(arr_a, n, p);
 
 	printf("%s : Task = %d Diff = %d Elapsed = %.2f\n", argv[0], task, diff, t);
 	
-	delete[] arr;
+	delete[] arr_a;
+	delete[] arr_b;
 
 	return 0;
 }

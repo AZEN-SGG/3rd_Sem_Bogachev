@@ -69,4 +69,3 @@ int diff_array (const data *arr, const int n)
 		count += (arr[i] < arr[i - 1]);
 	return count;
 }
-
