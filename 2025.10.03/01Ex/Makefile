@@ -18,7 +18,7 @@ TARGET = a01.$(EXE)
 OBJ = main.o solve.o array.o 
 
 %.o: %.cxx
-	g++ $(WFLAGS) -DM=$(M) -c $< -o $@
+	g++ $(WFLAGS) -c $< -o $@
 
 $(TARGET): $(OBJ)
 	g++ $(WFLAGS) $^ -o $@
