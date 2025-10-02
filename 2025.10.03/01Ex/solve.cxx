@@ -13,11 +13,11 @@ int t1_solve(student *a, int n, student& x)
 			answer += avg+1;
 			a += avg+1;
 			n -= avg+1;
-		} else return avg;
+		} else return answer + avg;
 
 		avg = n >> 1;
 	}
 
-	return 0;
+	return answer;
 }
 
