@@ -10,7 +10,7 @@ OUTS = $(foreach n,$(NUMS),$(shell printf "a%02d.out\n" "$(n)"))
 
 all: $(OUTS)
 
-%.o: %.cxx
+%.o: %.cpp
 	-g++ -DM=$(M) -c $(FLAGS) $<
 
 a%.out: main_%.o solve_%.o $(OBJ_COMMON)
