@@ -17,7 +17,7 @@ endif
 TARGET = a02.$(EXE)
 OBJ = main.o solve.o array.o 
 
-%.o: %.cxx
+%.o: %.cpp
 	g++ $(WFLAGS) -c $< -o $@
 
 $(TARGET): $(OBJ)

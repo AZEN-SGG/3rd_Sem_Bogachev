@@ -14,7 +14,7 @@ else
 	CLEAN = rm -f
 endif
 
-TARGET = a01.$(EXE)
+TARGET = a03.$(EXE)
 OBJ = main.o solve.o array.o 
 
 %.o: %.cpp
