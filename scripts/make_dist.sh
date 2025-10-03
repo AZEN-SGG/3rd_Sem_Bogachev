@@ -45,7 +45,7 @@ for num in "${tasks[@]}"; do
         cleanup_and_exit "Папка $folder не найдена"
     fi
 
-    for file in main.cxx solve.cxx solve.h; do
+    for file in main.cpp solve.cpp solve.h; do
         src="$folder/$file"
         if [ ! -f "$src" ]; then
             cleanup_and_exit "Файл $src не найден"
@@ -57,7 +57,7 @@ for num in "${tasks[@]}"; do
 
         cp "$src" "$dest_file" || cleanup_and_exit "Ошибка копирования $src"
         copied_files+=("$dest_file")
-	if [[ "$file" == "main.c" || "$file" == "solve.c" ]]; then
+	if [[ "$file" == "main.cpp" || "$file" == "solve.cpp" ]]; then
 		replace_in_file "$dest_file" "${folder:0:2}"
 	fi
     done
