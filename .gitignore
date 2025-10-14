@@ -25,6 +25,7 @@
 *.swo
 *.swn
 *.bak
+.swp
 
 # IDE and editor files
 .idea/
@@ -110,6 +111,7 @@ System Volume Information/
 # Linux system files
 lost+found/
 .nfs*
+.directory
 
 # HeapTrack
 *.zst
