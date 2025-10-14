@@ -86,7 +86,6 @@ int main(int argc, char *argv[])
 	printf("%s : Task = %d Res = %d Elapsed = %.2f\n", argv[0], task, res, t);
 	
 	delete x;
-	delete[] arr;
 
 	return 0;
 }

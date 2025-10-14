@@ -1,10 +1,10 @@
+TASK ?= 01
+
 WFLAGS = -O3 -mfpmath=sse -fstack-protector-all -g \
 -W -Wall -Wextra -Wunused -Wcast-align -Werror -pedantic -pedantic-errors \
 -Wfloat-equal -Wpointer-arith -Wformat-security -Wmissing-format-attribute \
 -Wformat=1 -Wwrite-strings -Wno-long-long -Woverloaded-virtual \
 -Wnon-virtual-dtor -Wcast-qual -Wno-suggest-attribute=format -std=c++11
-
-M ?= 10
 
 ifeq ($(OS),Windows_NT)
 	EXE = exe
@@ -14,14 +14,14 @@ else
 	CLEAN = rm -f
 endif
 
-TARGET = a01.$(EXE)
-OBJ = main.o solve.o array.o 
+TARGET = a$(TASK).$(EXE)
+OBJ = main.o solve.o list.o 
 
 %.o: %.cpp
-	/usr/bin/g++ $(WFLAGS) -c $< -o $@
+	g++ $(WFLAGS) -c $< -o $@
 
 $(TARGET): $(OBJ)
-	/usr/bin/g++ $(WFLAGS) $^ -o $@
+	g++ $(WFLAGS) $^ -o $@
 
 gdb: WFLAGS = -mfpmath=sse -fstack-protector-all -g -O0 -Wall -Wextra -Werror -std=c++11
 gdb: clean $(TARGET)
