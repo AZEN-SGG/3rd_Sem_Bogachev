@@ -19,7 +19,8 @@ int t8_solve(list_node *node)
 				else
 					len += (len == 0) ? 2 : 1;
 			} else {
-				len += (len == 0) ? len_stable - 1 : len_stable;
+				if (len_stable)
+					len += (len == 0) ? len_stable : len_stable - 1;
 				maximum = (maximum < len) ? len : maximum;
 				len = (len_stable == 0) ? 2 : len_stable + 1;
 			}
@@ -33,7 +34,8 @@ int t8_solve(list_node *node)
 		last = node;
 	}
 
-	len += len_stable;
+	if (len_stable)
+		len += (len == 0) ? len_stable : len_stable - 1;
 	maximum = (maximum < len) ? len : maximum;
 
 	return maximum;
