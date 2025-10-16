@@ -13,7 +13,7 @@ all: $(OUTS)
 	-g++ -c $(FLAGS) $<
 
 a%.out: main_%.o solve_%.o $(OBJ_COMMON)
-	-g++ -static $(FLAGS) $^ -o $@ -lm
+	-g++ $(FLAGS) $^ -o $@ -lm
 
 clean:
 	 rm -f *.o *.out
