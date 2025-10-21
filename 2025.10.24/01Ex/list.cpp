@@ -55,6 +55,8 @@ io_status list2::read (FILE *fp, unsigned int max_read)
 		return io_status::format;
 	}
 
+	curr->set_prev(prev);
+
 	return io_status::success;
 }
 

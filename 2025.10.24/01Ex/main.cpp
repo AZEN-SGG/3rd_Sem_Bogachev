@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
 	} while (0);
 
 	len_old = roll->get_length();
+	printf("K = %d\n", k % len_old);
 
 	printf ("Source list:\n");
 	roll->print(r);
@@ -60,6 +61,9 @@ int main(int argc, char *argv[])
 	t = (clock() - t) / CLOCKS_PER_SEC;
 
 	len_new = roll->get_length();
+
+	printf ("New list:\n");
+	roll->print(r);
 
 	fprintf(stdout, "%s : Task = %d Len Old = %u Len New = %u Elapsed = %.2f\n", argv[0], task, len_old, len_new, t);
 		
