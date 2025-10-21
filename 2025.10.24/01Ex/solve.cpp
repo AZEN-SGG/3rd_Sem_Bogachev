@@ -19,11 +19,11 @@ void list2::shift (int k)
 		return;
 
 	head->set_prev(last);
+	last->set_next(head);
 	int i = 1;
 	for (; (i < k) ; last=last->get_prev())
 		i++;
 
-	last->set_next(head);
 	last->get_prev()->set_next(nullptr);
 	last->set_prev(nullptr);
 

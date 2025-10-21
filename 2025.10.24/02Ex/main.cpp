@@ -8,8 +8,8 @@
 
 int main(int argc, char *argv[])
 {
-	/* ./a01.out r filename k*/
-	int r, k, task = 1;
+	/* ./a02.out r filename k*/
+	int r, k, task = 2;
 	unsigned len_old = 0, len_new = 0;
 	io_status ret;
 	double t;
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 	roll->print(r);
 
 	t = clock();
-	roll->shift(k);
+	roll->t2_solve(k);
 	t = (clock() - t) / CLOCKS_PER_SEC;
 
 	len_new = roll->get_length();
