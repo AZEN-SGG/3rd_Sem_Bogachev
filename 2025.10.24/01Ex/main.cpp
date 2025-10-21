@@ -1,4 +1,3 @@
-#include "solve.h"
 #include "list.h"
 #include "io_status.h"
 
@@ -13,18 +12,18 @@ int main(int argc, char *argv[])
 	int r, k, task = 1;
 	unsigned len_old = 0, len_new = 0;
 	io_status ret;
-	list2 *roll = new list2;
 	double t;
 
 	if (
 		!(argc == 4
-		&& sscanf(argv[1], "%d", &r) == 1)
-		&& sscanf(argv[3], "%d", &k) == 1
+		&& sscanf(argv[1], "%d", &r) == 1
+		&& sscanf(argv[3], "%d", &k) == 1)
 	) {
 		printf("Usage %s r filename k\n", argv[0]);
 		return 1;
 	}
 
+	list2 *roll = new list2;
 	ret = roll->read_file(argv[2]);
 
 	do {

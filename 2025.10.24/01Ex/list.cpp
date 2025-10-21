@@ -12,12 +12,12 @@ void list2::erase ()
 	head = nullptr;
 }
 
-io_status list2::read (FILE *fp = stdin, unsigned int max_read = -1)
+io_status list2::read (FILE *fp, unsigned int max_read)
 {
 	list2_node buf,
-				*prev = nullptr,
-				*next = nullptr;
-	io_status ret = 0;
+		*prev = nullptr,
+		*next = nullptr;
+	io_status ret;
 
 	erase();
 
@@ -28,7 +28,7 @@ io_status list2::read (FILE *fp = stdin, unsigned int max_read = -1)
 	if (head == nullptr)
 		return io_status::memory;
 
-	*head = (list_node &&)buf;
+	*head = (list2_node &&)buf;
 	list2_node *curr = head;
 
 	unsigned int i = 0;
@@ -58,7 +58,7 @@ io_status list2::read (FILE *fp = stdin, unsigned int max_read = -1)
 	return io_status::success;
 }
 
-io_status list2::read_file (char *filename, unsigned int max_read == -1)
+io_status list2::read_file (char *filename, unsigned int max_read)
 {
 	FILE *fp = fopen(filename, "r");
 
@@ -71,7 +71,7 @@ io_status list2::read_file (char *filename, unsigned int max_read == -1)
 	return ret;
 }
 
-void list2::print (unsigned int r = 10, FILE *fp = stdout)
+void list2::print (unsigned int r, FILE *fp) const
 {
 	unsigned int i = 0;
 	for (const list2_node *curr = head ; ((curr != nullptr) && (i < r)) ; curr = curr->get_next())

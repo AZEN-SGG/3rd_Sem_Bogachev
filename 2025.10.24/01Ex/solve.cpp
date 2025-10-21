@@ -1,6 +1,6 @@
 #include "list.h"
 
-void list2::shift (int k = 0)
+void list2::shift (int k)
 {
 	unsigned int len = 0;
 	list2_node *last = head;
@@ -13,18 +13,18 @@ void list2::shift (int k = 0)
 	if (len == 0)
 		return;
 	
-	k = len * (k >> 31) + k % len;
+	k = len * (k < 0) + k % len;
 
 	if (k == 0)
 		return;
 
 	head->set_prev(last);
 	int i = 1;
-	for (list2_node *curr = last ; ((curr != nullptr) && (i < k)) ; curr=curr->get_prev())
+	for (; ((last != nullptr) && (i < k)) ; last=last->get_prev())
 		i++;
 
-	curr->get_prev()->set_next(nullptr);
-	curr->set_prev(nullptr);
+	last->get_prev()->set_next(nullptr);
+	last->set_prev(nullptr);
 
-	head = curr;
+	head = last;
 }
