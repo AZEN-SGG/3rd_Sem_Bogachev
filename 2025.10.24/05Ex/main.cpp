@@ -8,8 +8,8 @@
 
 int main(int argc, char *argv[])
 {
-	/* ./a04.out r filename k*/
-	int r, k, task = 4;
+	/* ./a05.out r filename k*/
+	int r, k, task = 5;
 	unsigned len_old = 0, len_new = 0;
 	io_status ret;
 	double t = 0;
@@ -57,13 +57,9 @@ int main(int argc, char *argv[])
 	printf ("Source list:\n");
 	roll->print(r);
 
-	if (!(((len_old & 1) && (k > (int)(len_old >> 1)))
-	|| ((!(len_old & 1)) && (k >= (int)(len_old >> 1)))))
-	{
-		t = clock();
-		roll->t4_solve(k);
-		t = (clock() - t) / CLOCKS_PER_SEC;
-	}
+	t = clock();
+	roll->t5_solve(k);
+	t = (clock() - t) / CLOCKS_PER_SEC;
 
 	len_new = roll->get_length();
 
