@@ -11,7 +11,7 @@ void list2::t2_solve (int k)
 		list2_node *prev = curr->get_prev();
 		for (; (prev != nullptr) && (i < k) ; prev=prev->get_prev())
 		{
-			if (curr > prev)
+			if (*curr > *prev)
 				break;
 			i++;
 		} if ((prev != nullptr) && (i < k))
