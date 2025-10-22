@@ -2,11 +2,27 @@
 
 void list2::t5_solve (int k)
 {
-	list2_node *curr = ,
-		   *start = head;
+	int len = 0;
+	list2_node *curr = nullptr,
+		   *next = nullptr;
 
+	for (curr = head ; curr != nullptr ; curr = next)
+	{
+		next = curr->get_next();
+		if (next == nullptr)
+			return;
 
-	for (; curr != nullptr ;)
+		if (*head == *next)
+		{
+			len++;
+		} else
+		{
+			if (len)
+			{
+				del_nodes(
+			}
+		}
+	}
 
 	if (curr == nullptr)
 		return;

@@ -93,17 +93,43 @@ void list2::del_node (list2_node *el)
 	delete el;
 }
 
-void del_nodes (list2_node *start, int len)
+void list2::del_nodes_after (list2_node *start, int len)
 {
 	list2_node *prev = start->get_prev(),
-		   *next;
+		   *next = nullptr;
 	
 	for (; (start != nullptr) && (len > 0) ; start = next)
 	{
 		next = start->get_next();
 		delete start;
-		len++;
+		len--;
 	}
+
+	if (next != nullptr)
+		next->set_prev(prev);
+
+	if (prev != nullptr)
+		prev->set_next(next);
+	else
+		head = next;
+}
+
+void list2::del_nodes_before (list2_node *end, int len)
+{
+	list2_node *prev = nullptr,
+		   *next = end->get_next();
+	
+	for (; (end != nullptr) && (len > 0) ; end = prev)
+	{
+		next = start->get_next();
+		delete start;
+		len--;
+	}
+
+	next->set_prev(prev);
+
+	if (prev != nullptr)
+		prev->set_next(next);
 }
 
 void list2::print (unsigned int r, FILE *fp) const
