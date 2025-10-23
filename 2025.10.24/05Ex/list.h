@@ -50,7 +50,8 @@ class list2
 		io_status read_file (char *filename, unsigned int max_read = -1);
 		
 		void del_node (list2_node *el);
-		void del_nodes (list2_node *start, int len = 0);
+		void del_nodes_after (list2_node *start, int len);
+		void del_nodes_before (list2_node *end, int len);
 
 		void print (unsigned int r = 10, FILE *fp = stdout) const;
 		unsigned int get_length ();		

@@ -6,61 +6,23 @@ void list2::t5_solve (int k)
 	list2_node *curr = nullptr,
 		   *next = nullptr;
 
-	for (curr = head ; curr != nullptr ; curr = next)
+	for (curr = head, next = curr->get_next() ; next != nullptr ; curr = next, next = curr->get_next())
 	{
-		next = curr->get_next();
-		if (next == nullptr)
-			return;
-
-		if (*head == *next)
+		if (*curr == *next)
 		{
-			len++;
+			len += (len == 0) ? 2 : 1;
 		} else
 		{
-			if (len)
-			{
-				del_nodes(
-			}
+			if (len > k)
+				del_nodes_before(next, len);
+
+			len = 0;
 		}
 	}
 
-	if (curr == nullptr)
-		return;
-
-	int i = 0;
-	for (; curr != nullptr ;)
+	if (len > k)
 	{
-		list2_node *start_next = start->get_next();
-		list2_node *curr_next = curr->get_next();
-
-		if (*start > *start_next)
-		{
-			if (i == k)
-			{
-				del_node(start);
-				i = 0;
-			} else
-			{
-				i = 0;
-			}
-		} else // start <= start_next
-		{
-			if (i == k)
-			{
-				del_node(start);
-			} else
-			{
-				i++;
-			}
-		}
-
-		if (curr_next == nullptr) // Сначала удаление максимума, потом проверка на следующий
-			return;
-
-		if (*curr < *curr_next) // Обратное условие -> точно не максимум предыдущие к - 1
-			i = 0;
-
-		start = start_next;
-		curr = curr_next;
+		del_nodes_before(curr, len-1);
+		del_node(curr);
 	}
 }

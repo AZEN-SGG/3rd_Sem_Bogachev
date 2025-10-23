@@ -105,31 +105,34 @@ void list2::del_nodes_after (list2_node *start, int len)
 		len--;
 	}
 
-	if (next != nullptr)
-		next->set_prev(prev);
+	if (start != nullptr)
+		start->set_prev(prev);
 
 	if (prev != nullptr)
-		prev->set_next(next);
+		prev->set_next(start);
 	else
-		head = next;
+		head = start;
 }
 
 void list2::del_nodes_before (list2_node *end, int len)
 {
 	list2_node *prev = nullptr,
-		   *next = end->get_next();
-	
-	for (; (end != nullptr) && (len > 0) ; end = prev)
+		   *next = end;
+
+	for (end = end->get_prev() ; (end != nullptr) && (len > 0) ; end = prev)
 	{
-		next = start->get_next();
-		delete start;
+		prev = end->get_prev();
+		delete end;
 		len--;
 	}
 
-	next->set_prev(prev);
+	if (end != nullptr)
+		end->set_next(next);
+	else
+		head = next;
 
-	if (prev != nullptr)
-		prev->set_next(next);
+	if (next != nullptr)
+		next->set_prev(end);
 }
 
 void list2::print (unsigned int r, FILE *fp) const
