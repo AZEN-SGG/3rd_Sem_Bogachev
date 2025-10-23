@@ -8,8 +8,8 @@
 
 int main(int argc, char *argv[])
 {
-	/* ./a06.out r filename k*/
-	int r, k, task = 6;
+	/* ./a08.out r filename k*/
+	int r, k, task = 8;
 	unsigned len_old = 0, len_new = 0;
 	io_status ret;
 	double t = 0;
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	if (
 		!(argc == 4
 		&& sscanf(argv[1], "%d", &r) == 1
-		&& ((sscanf(argv[3], "%d", &k) == 1) && (k >= 1)))
+		&& ((sscanf(argv[3], "%d", &k) == 1) && (k >= 0)))
 	) {
 		printf("Usage %s r filename k\n", argv[0]);
 		return 1;
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 	roll->print(r);
 
 	t = clock();
-	roll->t6_solve(k);
+	roll->t8_solve(k);
 	t = (clock() - t) / CLOCKS_PER_SEC;
 
 	len_new = roll->get_length();
