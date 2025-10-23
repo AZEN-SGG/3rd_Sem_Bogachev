@@ -52,7 +52,6 @@ int main(int argc, char *argv[])
 
 
 	len_old = roll->get_length();
-	printf("Unsigned %u - signed %d\n", len_old, (int)len_old);
 
 	printf ("Source list:\n");
 	roll->print(r);
