@@ -2,7 +2,7 @@
 
 void list2::shift (int k)
 {
-	unsigned int len = 0;
+	int len = 0;
 	list2_node *last = head;
 	while (last->get_next() != nullptr)
 	{
