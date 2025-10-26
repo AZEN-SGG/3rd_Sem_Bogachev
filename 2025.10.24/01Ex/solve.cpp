@@ -1,4 +1,5 @@
 #include "list.h"
+#include <stdio.h>
 
 void list2::shift (int k)
 {
