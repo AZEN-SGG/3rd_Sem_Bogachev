@@ -50,6 +50,9 @@ class list
         list& operator= (const list&) = delete;
         list& operator= (list&& r)
         {
+            if (this->head == r.head)
+                return *this;
+
             erase();
 
             head = r.head;
@@ -68,14 +71,17 @@ class list
 //        void set_head (list_node *new_head) { head = new_head; }
 
         void add_to_top (list_node *new_head);
-	void add_to_sorted (list_node *new_node);
+        void add_to_sorted (list_node *new_node);
+
+        // for neyman
+        list_node * add_sorted_to_sorted (list_node *l_temp, int len_add, list_node **end_A);
 
 //        int get_less_than_previous ();
         
         void bubble_sort ();
         void find_min_sort ();
-	void line_insert_sort ();
-	void neyman_sort ();
+        void line_insert_sort ();
+        void neyman_sort ();
     private:
         void erase ();
 };
