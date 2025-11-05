@@ -1,6 +1,10 @@
 #ifndef TREE_H
 #define TREE_H
 
+#include "student.h"
+
+#include <cstdio>
+
 class tree;
 class tree_node : public student
 {
@@ -72,7 +76,46 @@ class tree
 			print_subtree(root, 0, r, fp);
 		}
 		io_status read (FILE *fp = stdin, unsigned int max_read = -1);
+		io_status read_file (char *filename, unsigned int max_read = -1);
+
+        // Solves:
+        int t1_solve ();
 	private:
-		static void delete_subtree (tree_node *curr
+		static void delete_subtree (tree_node *curr)
+        {
+            if (curr == nullptr)
+                return;
+            delete_subtree(curr->left);
+            delete_subtree(curr->right);
+            delete curr;
+        }
+        static void print_subtree (tree_node *curr, int level, int r, FILE *fp = stdout)
+        {
+            if ((curr == nullptr) || (level > r))
+                return;
+            int spaces = level << 1;
+            for (int i = 0 ; i < spaces ; i++)
+                fprintf(fp, " ");
+            curr->print(fp);
+            print_subtree(curr->left, level + 1, r, fp);
+            print_subtree(curr->right, level + 1, r, fp);
+        }
+        static void add_node_subtree (tree_node *curr, tree_node *x)
+        {
+            if (*x < *curr)
+            {
+                if (curr->left == nullptr)
+                    curr->left = x;
+                else
+                    add_node_subtree(curr->left, x);
+            } else
+            {
+                if (curr->right == nullptr)
+                    curr->right = x;
+                else
+                    add_node_subtree(curr->right, x);
+            }
+        }
+};
 
 #endif // TREE_H
