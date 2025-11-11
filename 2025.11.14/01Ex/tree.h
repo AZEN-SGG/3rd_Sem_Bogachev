@@ -6,6 +6,8 @@
 #include <cstdio>
 
 class tree;
+class family;
+
 class tree_node : public student
 {
 	private:
@@ -41,8 +43,6 @@ class tree_node : public student
 	private:
 		void erase_links () { left = nullptr; right = nullptr; }
 };
-
-class family;
 
 class tree
 {
@@ -80,57 +80,67 @@ class tree
 		io_status read (FILE *fp = stdin, unsigned int max_read = -1);
 		io_status read_file (char *filename, unsigned int max_read = -1);
 
-        // Side
-        int num_level (int level);
-        int depth_tree (int *max_diff);
-        int find_min (); // by field value
-        int del_with_value (const int value);
-	
-	family find_max ();
+		// Side
+		int num_level (int level);
+		int depth_tree (int *max_diff);
+		int find_min (); // by field value
+		int del_with_value (const int value);
 
-        // Solves
-        int t1_solve ();
-        int t2_solve ();
-        int t3_solve ();
-        int t4_solve ();
-        int t5_solve ();
-        int t6_solve ();
+		int get_count_total ();
+		int get_count_leaf ();
+		int get_count_1 ();
+		int get_count_2 ();
+		int get_height ();
+		int get_width ();
+		int get_balance ();
+	
+		void print_stat ();
+	
+		family find_max ();
+
+		// Solves
+		void t1_solve ();
+		int t2_solve ();
+		int t3_solve ();
+		int t4_solve ();
+		int t5_solve ();
+		int t6_solve ();
 	private:
 		static void delete_subtree (tree_node *curr)
-        {
-            if (curr == nullptr)
-                return;
-            delete_subtree(curr->left);
-            delete_subtree(curr->right);
-            delete curr;
-        }
-        static void print_subtree (tree_node *curr, int level, int r, FILE *fp = stdout)
-        {
-            if ((curr == nullptr) || (level > r))
-                return;
-            int spaces = level << 1;
-            for (int i = 0 ; i < spaces ; i++)
-                fprintf(fp, " ");
-            curr->print(fp);
-            print_subtree(curr->left, level + 1, r, fp);
-            print_subtree(curr->right, level + 1, r, fp);
-        }
-        static void add_node_subtree (tree_node *curr, tree_node *x)
-        {
-            if (*x < *curr)
-            {
-                if (curr->left == nullptr)
-                    curr->left = x;
-                else
-                    add_node_subtree(curr->left, x);
-            } else
-            {
-                if (curr->right == nullptr)
-                    curr->right = x;
-                else
-                    add_node_subtree(curr->right, x);
-            }
-        }
+		{
+			if (curr == nullptr)
+				return;
+			delete_subtree(curr->left);
+			delete_subtree(curr->right);
+			delete curr;
+		}
+		static void print_subtree (tree_node *curr, int level, int r, FILE *fp = stdout)
+		{
+			if ((curr == nullptr) || (level > r))
+				return;
+			int spaces = level << 1;
+			for (int i = 0 ; i < spaces ; i++)
+				fprintf(fp, " ");
+			curr->print(fp);
+			print_subtree(curr->left, level + 1, r, fp);
+			print_subtree(curr->right, level + 1, r, fp);
+		}
+		static void add_node_subtree (tree_node *curr, tree_node *x)
+		{
+			if (*x < *curr)
+			{
+				if (curr->left == nullptr)
+					curr->left = x;
+				else
+					add_node_subtree(curr->left, x);
+			} else
+			{
+				if (curr->right == nullptr)
+					curr->right = x;
+				else
+					add_node_subtree(curr->right, x);
+			}
+		}
 };
 
 class family
@@ -138,6 +148,8 @@ class family
 	tree_node *parent;
 	tree_node *child;
 	int dir;
+
+	friend class tree;
 };
 
 #endif // TREE_H

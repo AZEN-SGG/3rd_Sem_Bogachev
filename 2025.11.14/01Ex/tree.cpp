@@ -46,3 +46,62 @@ io_status tree::read_file (char *filename, unsigned int max_read)
     fclose(fp);
     return ret;
 }
+
+void tree::print_stat ()
+{
+    int (tree::*solves[])() = {
+        &tree::get_count_total,
+        &tree::get_count_leaf,
+        &tree::get_count_1,
+        &tree::get_count_2,
+        &tree::get_height,
+        &tree::get_width,
+        &tree::get_balance,
+    };
+    int len = sizeof(solves) / sizeof(solves[0]);
+
+    int res = 0;
+    for (int i = 0 ; i < len ; ++i)
+    {
+	    fprintf(stdout, ": Task = %d Result = %d\n", i + 1, res);
+    }
+}
+
+family tree::find_max ()
+{
+	family extr;
+
+	extr.child = root;
+	extr.parent = nullptr;
+
+	for (tree_node *curr = root ; (curr != nullptr) ; curr = curr->right)
+	{
+		tree_node *child = curr->left;
+		if (child != nullptr)
+		{
+			tree temp;
+			temp.root = child;
+			family left_extr = temp.find_max();
+			if (*left_extr.child > *extr.child)
+			{
+				extr = left_extr;
+				if (extr.parent == nullptr)
+					extr.parent = curr;
+			}
+			temp.root = nullptr;
+		}
+		
+		child = curr->right;
+		if (child != nullptr)
+		{
+			if (*child > *extr.child)
+			{
+				extr.child = child;
+				extr.parent = curr;
+				extr.dir = 1; // Right direction
+			}
+		}
+	}
+
+	return extr;
+}
