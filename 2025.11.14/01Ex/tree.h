@@ -81,20 +81,20 @@ class tree
 		io_status read_file (char *filename, unsigned int max_read = -1);
 
 		// Side
-		int num_level (int level);
-		int depth_tree (int *max_diff);
-		int find_min (); // by field value
-		int del_with_value (const int value);
+		int num_level (int level) const;
+		int depth_tree (int *max_diff) const;
+		int find_min () const; // by field value
+		int del_with_value (const int value) const;
 
-		int get_count_total ();
-		int get_count_leaf ();
-		int get_count_1 ();
-		int get_count_2 ();
-		int get_height ();
-		int get_width ();
-		int get_balance ();
+		static int get_count_total_subtree (tree_node *curr);
+		int get_count_leaf () const;
+		int get_count_1 () const;
+		int get_count_2 () const;
+		int get_height () const;
+		int get_width () const;
+		int get_balance () const;
 	
-		void print_stat ();
+		void print_stat (const char *executor, const int task, const double t = -1) const;
 	
 		static family find_max_subtree (tree_node *root);
 

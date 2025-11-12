@@ -15,7 +15,7 @@ else
 endif
 
 TARGET = a$(TASK).$(EXE)
-OBJ = main.o solve.o tree.o 
+OBJ = main.o solve.o tree.o condition.o 
 
 %.o: %.cpp
 	g++ $(WFLAGS) -c $< -o $@

@@ -46,27 +46,7 @@ io_status tree::read_file (char *filename, unsigned int max_read)
     fclose(fp);
     return ret;
 }
-/*
-void tree::print_stat ()
-{
-    int (tree::*solves[])() = {
-        &tree::get_count_total,
-        &tree::get_count_leaf,
-        &tree::get_count_1,
-        &tree::get_count_2,
-        &tree::get_height,
-        &tree::get_width,
-        &tree::get_balance,
-    };
-    int len = sizeof(solves) / sizeof(solves[0]);
 
-    int res = 0;
-    for (int i = 0 ; i < len ; ++i)
-    {
-	    fprintf(stdout, ": Task = %d Result = %d\n", i + 1, res);
-    }
-}
-*/
 family tree::find_max_subtree (tree_node *root)
 {
 	family extr;
@@ -103,3 +83,4 @@ family tree::find_max_subtree (tree_node *root)
 
 	return extr;
 }
+

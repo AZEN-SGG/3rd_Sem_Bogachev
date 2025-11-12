@@ -9,7 +9,7 @@
 int main(int argc, char *argv[])
 {
 	/* ./a01.out r filename */
-	int r;
+	int r, task = 1;
 	io_status ret;
 	double t = 0;
 
@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
 
 	printf ("Original tree:\n");
 	olha.print(r);
+	olha.print_stat(argv[0], task);
 
 	t = clock();
 	olha.t1_solve();
@@ -56,6 +57,7 @@ int main(int argc, char *argv[])
 
 	printf ("Modified tree:\n");
 	olha.print(r);
+	olha.print_stat(argv[0], task, t);
 		
 	return 0;
 }
