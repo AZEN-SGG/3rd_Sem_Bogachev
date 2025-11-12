@@ -7,6 +7,7 @@
 
 class tree;
 class family;
+class level_adds;
 
 class tree_node : public student
 {
@@ -97,6 +98,11 @@ class tree
 		void print_stat (const char *executor, const int task, const double t = -1) const;
 	
 		static family find_max_subtree (tree_node *root);
+		static family find_min_level_subtree (tree_node *curr, level_adds adds);
+		family find_min_level ();
+		
+		// TODO Remove it
+		void test ();
 
 		// Solves
 		void t1_solve ();

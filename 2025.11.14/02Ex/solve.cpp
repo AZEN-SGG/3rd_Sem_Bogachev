@@ -1,49 +1,70 @@
-#include "tree.h"
+#include "solve.h"
 
-void tree::t1_solve ()
+family tree::find_min_level_subtree (tree_node *curr, level_adds adds)
 {
-	family extr;
+	family min;
 
-	for (tree_node *prev = nullptr, *curr = root ; (curr != nullptr) ; prev = curr, curr = curr->right)
+	for (; (curr != nullptr) ; curr = curr->right, adds.c_level++)
 	{
-		extr = find_max_subtree(curr);
+		int c_child = ((1 << (adds.c_level + 1)) + (((1 << (adds.c_level)) ^ adds.pos) << 1));
 		
-		if (extr.parent != nullptr)
+		if ((adds.c_level + 1) == adds.n_level)
 		{
-			switch (extr.dir)
+			tree_node *child;
+			if (c_child > adds.min_el)
 			{
-				case 0:
-					extr.parent->left = curr;
-					break;
-				case 1:
-					extr.parent->right = curr;
-					break;
+				if (curr->left == nullptr)
+					child = curr->right;
+				else if (curr->right == nullptr)
+					child = curr->left;
+				else
+					child = (*(curr->left) < *(curr->right)) ? curr->left : curr->right;
+			} else
+				child = curr->right;
+
+			if ((min.child == nullptr) || ((child != nullptr) && (*child < *min.child)))
+			{
+				min.parent = curr;
+				min.child = child;
 			}
 
-			extr.parent = curr->left; // Like temp
-			curr->left = extr.child->left;
-			extr.child->left = extr.parent;
-
-			extr.parent = curr->right; // Again
-			curr->right = extr.child->right;
-			extr.child->right = extr.parent;
-
-			if (prev == nullptr) // if curr = root
-				root = extr.child;
-			else
-				prev->right = extr.child;
-
-			curr = extr.child;
-		} // else - root, not needed to change smth
-
-
-		if (curr->left != nullptr)
+			break;
+		} else
 		{
-			tree temp;
-			temp.root = curr->left;
-			temp.t1_solve();
-			curr->left = temp.root;
-			temp.root = nullptr;
+			if ((curr->left != nullptr) && ((((adds.pos + 1) * (1 << (adds.n_level - adds.c_level))) - 1) > adds.min_el))
+			{
+				level_adds temp_adds {
+					c_child, // left
+					adds.c_level + 1,
+					adds.n_level,
+					adds.min_el,
+				};
+				family temp = find_min_level_subtree(curr->left, temp_adds);
+				if ((min.child == nullptr) || ((temp.child != nullptr) && (*temp.child < *min.child)))
+					min = temp;
+			}
+
+			adds.pos = c_child + 1; // right
 		}
 	}
+
+	return min;
 }
+
+void tree::test ()
+{
+	level_adds temp {
+		1,
+		0,
+		2,
+		5,
+	};
+
+	family ans = find_min_level_subtree(root, temp);
+
+	printf("Minimum is:\n");
+	ans.child->print();
+	printf("Father is\n");
+	ans.parent->print();
+}
+

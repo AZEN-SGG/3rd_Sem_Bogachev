@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
 	tree olha;
 
 	ret = olha.read_file(argv[2]);
-
 	do {
 		switch (ret)
 		{
@@ -50,14 +49,14 @@ int main(int argc, char *argv[])
 	printf ("Original tree:\n");
 	olha.print(r);
 	olha.print_stat(argv[0], task);
-
+	
 	t = clock();
-	olha.t2_solve();
+	olha.test();
 	t = (clock() - t) / CLOCKS_PER_SEC;
 
 	printf ("Modified tree:\n");
 	olha.print(r);
 	olha.print_stat(argv[0], task, t);
-		
+
 	return 0;
 }
