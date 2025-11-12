@@ -6,7 +6,7 @@ void tree::t1_solve ()
 
 	for (tree_node *prev = nullptr, *curr = root ; (curr != nullptr) ; prev = curr, curr = curr->right)
 	{
-		extr = find_max();
+		extr = find_max_subtree(curr);
 		
 		if (extr.parent != nullptr)
 		{
@@ -42,6 +42,7 @@ void tree::t1_solve ()
 			tree temp;
 			temp.root = curr->left;
 			temp.t1_solve();
+			curr->left = temp.root;
 			temp.root = nullptr;
 		}
 	}

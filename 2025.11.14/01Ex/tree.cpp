@@ -46,7 +46,7 @@ io_status tree::read_file (char *filename, unsigned int max_read)
     fclose(fp);
     return ret;
 }
-
+/*
 void tree::print_stat ()
 {
     int (tree::*solves[])() = {
@@ -66,29 +66,27 @@ void tree::print_stat ()
 	    fprintf(stdout, ": Task = %d Result = %d\n", i + 1, res);
     }
 }
-
-family tree::find_max ()
+*/
+family tree::find_max_subtree (tree_node *root)
 {
 	family extr;
 
 	extr.child = root;
 	extr.parent = nullptr;
+	extr.dir = 0;
 
 	for (tree_node *curr = root ; (curr != nullptr) ; curr = curr->right)
 	{
 		tree_node *child = curr->left;
 		if (child != nullptr)
 		{
-			tree temp;
-			temp.root = child;
-			family left_extr = temp.find_max();
+			family left_extr = find_max_subtree(child);
 			if (*left_extr.child > *extr.child)
 			{
 				extr = left_extr;
 				if (extr.parent == nullptr)
 					extr.parent = curr;
 			}
-			temp.root = nullptr;
 		}
 		
 		child = curr->right;

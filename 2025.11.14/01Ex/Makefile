@@ -1,4 +1,4 @@
-TASK ?= 06
+TASK ?= 01
 
 WFLAGS = -O3 -mfpmath=sse -fstack-protector-all -g \
 -W -Wall -Wextra -Wunused -Wcast-align -Werror -pedantic -pedantic-errors \

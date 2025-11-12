@@ -96,7 +96,7 @@ class tree
 	
 		void print_stat ();
 	
-		family find_max ();
+		static family find_max_subtree (tree_node *root);
 
 		// Solves
 		void t1_solve ();
