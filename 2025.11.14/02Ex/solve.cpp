@@ -31,7 +31,8 @@ family tree::find_min_level_subtree (tree_node *curr, level_adds adds)
 			break;
 		} else
 		{
-			if ((curr->left != nullptr) && ((((adds.pos + 1) * (1 << (adds.n_level - adds.c_level))) - 1) > adds.min_el))
+            int max_el = (((c_child + 1) * (1 << (adds.n_level - adds.c_level - 1))) - 1);
+			if ((curr->left != nullptr) && (max_el > adds.min_el))
 			{
 				level_adds temp_adds {
 					c_child, // left
