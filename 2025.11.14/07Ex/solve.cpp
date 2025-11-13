@@ -77,6 +77,8 @@ int tree::delete_seq_longer_k_on_level (tree_node *curr, bin_pos pos, int on_lev
             };
 
             deleted += delete_seq_longer_k_on_level(curr->left, left_pos, on_level, seq, x);
+            if (deleted >= (1 << (on_level)))
+                return deleted;
         }
     }
 
@@ -89,10 +91,10 @@ int tree::delete_seq_longer_k_on_level (tree_node *curr, bin_pos pos, int on_lev
                 seq->to = pos.index - 1;
                 deleted += (seq->to - seq->from + 1);
                 if (seq->len >= x.value)
-                    delete_seq(seq);
+                    return 1 << on_level;
                 seq->from = -1;
                 seq->len = 0;
-            }
+            } 
         } else
         {
             if (seq->from < 0)
@@ -126,9 +128,12 @@ void tree::t7_solve (const student& x)
         deleted = delete_seq_longer_k_on_level(root, pos, level, &seq, x);
         if (seq.from > 0)
         {
-            seq.to = (1 << (level + 1)) - 1;
             if ((seq.len) >= x.value)
+            {
+                seq.from = 1 << level;
+                seq.to = (1 << (level + 1)) - 1;
                 delete_seq(&seq);
+            }
             seq.from = -1;
             seq.len = 0;
         }
