@@ -12,21 +12,37 @@ family tree::find_min_level_subtree (tree_node *curr, level_adds adds)
 		if ((adds.c_level + 1) == adds.n_level)
 		{
 			tree_node *child;
+            int dir;
 			if (c_child > adds.min_el)
 			{
 				if (curr->left == nullptr)
+                {
 					child = curr->right;
-				else if (curr->right == nullptr)
+                    dir = 1;
+                } else if (curr->right == nullptr)
+				{
+                    child = curr->left;
+                    dir = 0;
+                } else if (curr->left->value < curr->right->value)
+                {
 					child = curr->left;
-				else
-					child = (curr->left->value < curr->right->value) ? curr->left : curr->right;
+                    dir = 0;
+                } else
+                {
+                    child = curr->right;
+                    dir = 1;
+                }
 			} else
+            {
 				child = curr->right;
+                dir = 1;
+            }
 
 			if ((min.child == nullptr) || ((child != nullptr) && (child->value < min.child->value)))
 			{
 				min.parent = curr;
 				min.child = child;
+                min.dir = dir;
 			}
 
 			break;
