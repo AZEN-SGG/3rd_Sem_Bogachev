@@ -90,15 +90,12 @@ family tree::get_index_node (int n, int level) const
 
 void tree::t2_solve ()
 {
-    int index = 1,
-        level = 0;
+    int index = 2,
+        level = 1;
 
     family min, curr;
 
     do {
-        index++;
-        level += (index >= (1 << (level + 1)));
-
         level_adds adds {
             1, // from root
             0,
