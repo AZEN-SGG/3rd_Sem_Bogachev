@@ -52,6 +52,90 @@ family tree::find_min_level_subtree (tree_node *curr, level_adds adds)
 	return min;
 }
 
+family tree::get_index_node (int n, int level) const
+{
+    family needed;
+    tree_node *curr = root;
+
+    int diff_levels = (1 << level);
+    n -= diff_levels;
+    diff_levels >>= 1;
+
+    while ((diff_levels > 0) && (curr != nullptr))
+    {
+        if (diff_levels == 1) // Before needed
+            needed.parent = curr;
+
+        if (n >= (diff_levels))
+        {
+            curr = curr->right;
+            needed.dir = 1;
+            n -= diff_levels;
+        } else
+        {
+            curr = curr->left;
+            needed.dir = 0;
+        }
+
+        diff_levels >>= 1;
+    }
+
+    needed.child = curr;
+
+    return needed;
+}
+
+void tree::t2_solve ()
+{
+    int index = 1,
+        level = 0;
+
+    family min, curr;
+
+    do {
+        index++;
+        level += (index > (1 << level));
+
+        level_adds adds {
+            1, // from root
+            0,
+            level, // what need
+            index - 1,
+        };
+
+        min = find_min_level_subtree(root, adds);
+        if (min.child == nullptr)
+            break;
+        
+        do {
+            curr = get_index_node(index, level);
+            index++;
+            level += (index > (1 << level));
+        } while (curr.child == nullptr);
+
+        if (curr.child != min.child)
+        {
+            tree_node *temp = curr.child->left;
+            curr.child->left = min.child->left;
+            min.child->left = temp;
+            
+            temp = curr.child->right;
+            curr.child->right = min.child->right;
+            min.child->right = temp;
+
+            if (curr.dir)
+                curr.parent->right = min.child;
+            else
+                curr.parent->left = min.child;
+
+            if (min.dir)
+                min.parent->right = curr.child;
+            else
+                min.parent->left = curr.child;
+        }
+    } while (min.child != nullptr);
+}
+
 void tree::test ()
 {
 	level_adds temp {

@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 	olha.print_stat(argv[0], task);
 	
 	t = clock();
-	olha.test();
+	olha.t2_solve();
 	t = (clock() - t) / CLOCKS_PER_SEC;
 
 	printf ("Modified tree:\n");

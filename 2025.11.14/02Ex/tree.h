@@ -99,14 +99,14 @@ class tree
 	
 		static family find_max_subtree (tree_node *root);
 		static family find_min_level_subtree (tree_node *curr, level_adds adds);
-		family find_min_level ();
+        family get_index_node (int n, int level) const;
 		
 		// TODO Remove it
 		void test ();
 
 		// Solves
 		void t1_solve ();
-		int t2_solve ();
+		void t2_solve ();
 		int t3_solve ();
 		int t4_solve ();
 		int t5_solve ();
