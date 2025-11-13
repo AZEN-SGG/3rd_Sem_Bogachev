@@ -19,11 +19,11 @@ family tree::find_min_level_subtree (tree_node *curr, level_adds adds)
 				else if (curr->right == nullptr)
 					child = curr->left;
 				else
-					child = (*(curr->left) < *(curr->right)) ? curr->left : curr->right;
+					child = (curr->left->value < curr->right->value) ? curr->left : curr->right;
 			} else
 				child = curr->right;
 
-			if ((min.child == nullptr) || ((child != nullptr) && (*child < *min.child)))
+			if ((min.child == nullptr) || ((child != nullptr) && (child->value < min.child->value)))
 			{
 				min.parent = curr;
 				min.child = child;
@@ -42,7 +42,7 @@ family tree::find_min_level_subtree (tree_node *curr, level_adds adds)
 					adds.min_el,
 				};
 				family temp = find_min_level_subtree(curr->left, temp_adds);
-				if ((min.child == nullptr) || ((temp.child != nullptr) && (*temp.child < *min.child)))
+				if ((min.child == nullptr) || ((temp.child != nullptr) && (temp.child->value < min.child->value)))
 					min = temp;
 			}
 
