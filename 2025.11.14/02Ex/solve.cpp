@@ -3,6 +3,7 @@
 family tree::find_min_level_subtree (tree_node *curr, level_adds adds)
 {
 	family min;
+    min.child = nullptr;
 
 	for (; (curr != nullptr) ; curr = curr->right, adds.c_level++)
 	{
@@ -57,6 +58,8 @@ family tree::get_index_node (int n, int level) const
     family needed;
     tree_node *curr = root;
 
+    needed.parent = root;
+
     int diff_levels = (1 << level);
     n -= diff_levels;
     diff_levels >>= 1;
@@ -94,7 +97,7 @@ void tree::t2_solve ()
 
     do {
         index++;
-        level += (index > (1 << level));
+        level += (index >= (1 << (level + 1)));
 
         level_adds adds {
             1, // from root
@@ -110,7 +113,7 @@ void tree::t2_solve ()
         do {
             curr = get_index_node(index, level);
             index++;
-            level += (index > (1 << level));
+            level += (index >= (1 << (level + 1)));
         } while (curr.child == nullptr);
 
         if (curr.child != min.child)
