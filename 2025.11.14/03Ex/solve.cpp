@@ -21,12 +21,12 @@ family tree::find_absolute_left_subtree (tree_node *curr)
     return left;
 }
 
-tree_node * tree::balance_subtree (tree_node *root)
+tree_node * tree::balance_to_left_subtree (tree_node *root)
 {
     for (tree_node *prev = nullptr, *curr = root ; (curr != nullptr) ; prev = curr, curr = curr->right)
     {
         if (curr->left != nullptr)
-            curr->left = balance_subtree(curr->left);
+            curr->left = balance_to_left_subtree(curr->left);
         else
         {
             family C = find_absolute_left_subtree(curr->right);
@@ -53,5 +53,5 @@ tree_node * tree::balance_subtree (tree_node *root)
 
 void tree::t3_solve ()
 {
-    root = balance_subtree(root);
+    root = balance_to_left_subtree(root);
 }

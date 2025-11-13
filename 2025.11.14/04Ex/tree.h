@@ -107,12 +107,16 @@ class tree
         // Task 3
         static family find_absolute_left_subtree (tree_node *curr);
         static tree_node * balance_to_left_subtree (tree_node *root);
+
+        // Task 4
+        static family find_absolute_right_subtree (tree_node *curr);
+        static tree_node * balance_to_right_subtree (tree_node *root);
 		
 		// Solves
 		void t1_solve ();
 		void t2_solve ();
 		void t3_solve ();
-		int t4_solve ();
+		void t4_solve ();
 		int t5_solve ();
 		int t6_solve ();
 	private:
