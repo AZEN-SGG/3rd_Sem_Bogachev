@@ -92,15 +92,15 @@ int tree::delete_seq_longer_k_on_level (tree_node *curr, bin_pos pos, int on_lev
                     delete_seq(seq);
                 seq->from = -1;
                 seq->len = 0;
-            } else
-                seq->len++;
+            }
         } else
         {
             if (seq->from < 0)
             {
                 seq->from = pos.index;
                 seq->len = 1;
-            }
+            } else
+                seq->len++;
         }
     } else
         deleted++;
