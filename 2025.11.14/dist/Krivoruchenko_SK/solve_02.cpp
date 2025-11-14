@@ -1,4 +1,4 @@
-#include "solve.h"
+#include "solve_02.h"
 
 family tree::find_min_level_subtree (tree_node *curr, level_adds adds)
 {

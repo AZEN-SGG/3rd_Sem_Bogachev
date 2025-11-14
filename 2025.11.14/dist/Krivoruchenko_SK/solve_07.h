@@ -3,13 +3,7 @@
 
 #include "tree.h"
 
-struct level_adds
-{
-	int pos;
-	int c_level;
-	int n_level;
-	int min_el;
-};
+#include <cstring>
 
 struct bin_pos
 {
@@ -17,4 +11,11 @@ struct bin_pos
     int level;
 };
 
-#endif // SOLVE_H
+struct sequence
+{
+    int from;
+    int to;
+    int len;
+};
+
+#endif

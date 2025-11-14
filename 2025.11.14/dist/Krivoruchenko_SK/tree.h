@@ -9,6 +9,7 @@ class tree;
 class family;
 class level_adds;
 struct bin_pos;
+struct sequence;
 
 class tree_node : public student
 {
@@ -98,17 +99,40 @@ class tree
 	
 		void print_stat (const char *executor, const int task, const double t = -1) const;
 	
+        // Task 1
 		static family find_max_subtree (tree_node *root);
+
+        // Task 2
 		static family find_min_level_subtree (tree_node *curr, level_adds adds);
-        family get_node_by_index (bin_pos pos) const;
+        family get_index_node (int n, int level) const;
+        
+        // Task 3
+        static family find_absolute_left_subtree (tree_node *curr);
+        static tree_node * balance_to_left_subtree (tree_node *root);
+
+        // Task 4
+        static family find_absolute_right_subtree (tree_node *curr);
+        static tree_node * balance_to_right_subtree (tree_node *root);
 		
+        // Task 5
+        static int delete_k_deep_subtrees_with_s (tree_node *root, const student& x);
+
+        // Task 6
+        static int delete_subtree_with_k_arm (tree_node *root, const student& x);
+
+        // Task 7
+        family get_node_by_index (bin_pos pos) const;
+        void delete_seq (sequence *seq);
+        int delete_seq_longer_k_on_level (tree_node *curr, bin_pos pos, int on_level, sequence *seq, const student& x);
+
 		// Solves
 		void t1_solve ();
 		void t2_solve ();
-		int t3_solve ();
-		int t4_solve ();
-		int t5_solve ();
-		int t6_solve ();
+		void t3_solve ();
+		void t4_solve ();
+		void t5_solve (const student& x);
+		void t6_solve (const student& x);
+		void t7_solve (const student& x);
 	private:
 		static void delete_subtree (tree_node *curr)
 		{
