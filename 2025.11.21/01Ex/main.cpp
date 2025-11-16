@@ -1,0 +1,62 @@
+#include "tree.h"
+#include "io_status.h"
+
+#include <cstdio>
+#include <ctime>
+#include <new>
+#include <exception>
+
+int main(int argc, char *argv[])
+{
+	/* ./a01.out r filename k */
+	int r, k, res, task = 1;
+	io_status ret;
+	double t = 0;
+
+	if (
+		!(argc == 4
+		&& sscanf(argv[1], "%d", &r) == 1
+        && sscanf(argv[3], "%d", &k) == 1)
+	) {
+		printf("Usage %s r filename k\n", argv[0]);
+		return 1;
+	}
+
+	tree olha;
+	ret = olha.read_file(argv[2]);
+	do {
+		switch (ret)
+		{
+			case io_status::success:
+				continue;
+			case io_status::open:
+				fprintf (stderr, "Error: Cannot open %s\n", argv[2]);
+				break;
+			case io_status::format:
+				fprintf (stderr, "Error: Wrong format of file %s\n", argv[2]);
+				break;
+			case io_status::eof:
+				fprintf (stderr, "Error: End of file %s\n", argv[2]);
+				break;
+			case io_status::memory:
+				fprintf (stderr, "Error: MEMORY\n");
+				break;
+		}
+
+		return 3;
+	} while (0);
+
+	printf ("Original tree:\n");
+	olha.print(r);
+	
+	t = clock();
+	res = olha.t1_solve(k);
+	t = (clock() - t) / CLOCKS_PER_SEC;
+
+    fprintf(stdout, "%s : Task = %d k = %d Result = %d Elapsed = %.2f\n", argv[0], task, k, res, t);
+
+	printf ("Modified tree:\n");
+	olha.print(r);
+
+	return 0;
+}
