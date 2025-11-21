@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[])
 {
-	/* ./a05.out r filename k */
+	/* ./a06.out r filename k */
 	int r, k;
 	io_status ret;
 	double t = 0;
@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
         &tree::t3_solve,
         &tree::t4_solve,
         &tree::t5_solve,
+        &tree::t6_solve,
     };
     int len = sizeof(solves) / sizeof(solves[0]);
 
