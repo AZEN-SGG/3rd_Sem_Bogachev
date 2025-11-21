@@ -97,6 +97,10 @@ class tree
         // Task 6
         static int get_count_nodes_in_branch_above_k (const tree_node *curr, const int k, const int level);
 
+        // Task 7
+        static int get_count_nodes_with_value_less_k (const tree_node *curr, const int k);
+        static int delete_subtrees_with_value_less_k (tree_node *root, const int k);
+        
 		// Solves
 		int t1_solve (const int k) const;
 		int t2_solve (const int k) const;
