@@ -23,10 +23,7 @@ class tree_node : public T
 			erase_links();
 			x.erase_links();
 		}
-		~tree_node ()
-		{
-			erase_links();
-		}
+		~tree_node () { erase_links(); }
 		
 		tree_node& operator= (const tree_node&) = delete;
 		tree_node& operator= (tree_node&& x)

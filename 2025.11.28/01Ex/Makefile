@@ -26,7 +26,7 @@ $(TARGET): $(OBJ)
 static: 
 	$(MAKE) LINK_FLAGS="-static"
 
-gdb: WFLAGS = -mfpmath=sse -fstack-protector-all -g -O0 -Wall -Wextra -Werror -std=c++11
+gdb: WFLAGS = -mfpmath=sse -fstack-protector-all -O0 -g3 -fno-inline -Wall -Wextra -Werror -std=c++11
 gdb: clean $(TARGET)
 
 prof: WFLAGS += -pg

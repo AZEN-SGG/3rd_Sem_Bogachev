@@ -17,21 +17,30 @@ class list2
 	public:
 		list2 () = default;
 		~list2 () { erase (); }
+		
+		list2 (const list2 &) = delete;
+		list2 (list2 && r)
+		{
+			head = r.head;
+			r.head = nullptr;
+		}
+
+		list2 & operator= (const list2 &) = delete;
+		list2 & operator= (list2 && r)
+		{
+			if (this == &r)
+				return *this;
+			
+			erase();
+			
+			head = r.head;
+			r.head = nullptr;
+			
+			return *this;
+		}
 
 		static void set_m (int m) { list2<T>::m = m; };
 		static void set_r (int r) { list2<T>::r = r; };
-
-		void erase ()
-		{
-			list2_node<T> *next = nullptr;
-			for (list2_node<T> *curr = head ; curr ; curr = next)
-			{
-				next = curr->next;
-				delete curr;
-			}
-
-			head = nullptr;
-		}
 
 		io_status read (FILE *fp = stdin)
 		{
@@ -52,12 +61,12 @@ class list2
 			*head = (list2_node<T> &&)buf;
 			list2_node<T> *curr = head;
 	
-			int i = 0;
-			while ((buf.read(fp) == io_status::success) && (i < m))
+			int i = 1;
+			while ((i < m) && (buf.read(fp) == io_status::success))
 			{
 				next = new list2_node<T>;
 	
-				if (next == nullptr)
+				if (!next)
 				{
 					erase();
 					return io_status::memory;
@@ -83,21 +92,6 @@ class list2
 
 			return io_status::success;
 		}
-		
-		io_status read_file (char *filename)
-		{
-			FILE *fp = fopen(filename, "r");
-
-			if (fp == nullptr)
-				return io_status::open;
-
-			io_status ret = read(fp);
-
-			fclose(fp);
-			return ret;
-		}
-		
-		void del_node (list2_node<T> *el);
 
 		void print (FILE *fp = stdout, int level = 0) const
 		{
@@ -112,7 +106,7 @@ class list2
 		int get_length () const
 		{
 			int len = 0;
-			for (list2_node<T> *curr = head ; curr ; curr = curr->next, len++);
+			for (list2_node<T> *curr = head ; curr ; len += curr->get_length(), curr = curr->next);
 			return len;
 		}
 
@@ -127,6 +121,18 @@ class list2
 				return 1;
 
 			return 0;
+		}
+	private:
+		void erase ()
+		{
+			list2_node<T> *next = nullptr;
+			for (list2_node<T> *curr = head ; curr ; curr = next)
+			{
+				next = curr->next;
+				delete curr;
+			}
+
+			head = nullptr;
 		}
 };
 

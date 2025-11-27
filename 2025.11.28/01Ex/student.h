@@ -37,7 +37,7 @@ class student
 			return *this;
 		}
 
-		int get_length () const { return (name != nullptr) ? 1 : 0; }
+		int get_length () const { return ((name != nullptr) ? 1 : 0); }
 		int is_empty () const {	return !get_length(); }
 
 		void print (FILE *fp = stdout, int level = 0) const

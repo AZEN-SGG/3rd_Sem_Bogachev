@@ -57,7 +57,7 @@ class tree
 				return io_status::memory;
 
 			unsigned int readed = 1;
-			while ((x.read(fp) == io_status::success) && (readed < max_read))
+			while ((readed < max_read) && (x.read(fp) == io_status::success))
 			{
 				tree_node<T> *curr = new tree_node<T>((tree_node<T>&&)x);
 				if (!curr)

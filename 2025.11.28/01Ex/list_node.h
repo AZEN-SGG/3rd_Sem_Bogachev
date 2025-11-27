@@ -29,6 +29,9 @@ class list2_node : public T
 		list2_node& operator= (const list2_node&) = delete;
 		list2_node& operator= (list2_node&& r)
 		{
+			if (this == &r)
+				return *this;
+
 			*(T *)(this) = (T&&)r;
 			
 			prev = r.prev;
