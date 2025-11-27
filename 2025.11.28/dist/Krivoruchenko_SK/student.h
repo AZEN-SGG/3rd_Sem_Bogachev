@@ -37,7 +37,7 @@ class student
 			return *this;
 		}
 
-		int get_length () const { return (name != nullptr) ? 1 : 0; }
+		int get_length () const { return ((name != nullptr) ? 1 : 0); }
 		int is_empty () const {	return !get_length(); }
 
 		void print (FILE *fp = stdout, int level = 0) const
@@ -62,28 +62,10 @@ class student
 			erase ();
 			return init (n, v);
 		}
-		void init_f (const int s, const int n, const int i)
-		{
-			erase ();
-			name = new char[sizeof(STUDENT_NAME)];
-			strcpy(name, STUDENT_NAME);
 
-			switch (s)
-			{
-				case 1:
-					value = i;
-					break;
-				case 2: 
-					value = n - i;
-					break;
-				case 3:
-					value = i >> 1;
-					break;
-				case 4:
-					value = n - (i >> 1);
-					break;
-			}
-		}
+		int get_min_value () const { return value; }
+
+		bool has_elem_equal_n (const int n) const { return value == n; }
 
 		int operator> (const student& x) const
 		{

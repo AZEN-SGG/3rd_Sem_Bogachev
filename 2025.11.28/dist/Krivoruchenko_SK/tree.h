@@ -1,46 +1,18 @@
 #ifndef TREE_H
 #define TREE_H
 
+#include "student.h"
+#include "list.h"
+#include "tree_node.h"
+
 #include <cstdio>
+#include <new>
 
-template <typename T>
-class tree;
-
-template <typename T>
-class tree_node : public T
+// For the 4th task
+struct t_count
 {
-	private:
-		tree_node * left = nullptr;
-		tree_node * right = nullptr;
-	public:
-		tree_node () = default;
-		tree_node (const tree_node&) = delete;
-		tree_node (tree_node&& x) : T ((T&&)x)
-		{
-			erase_links();
-			x.erase_links();
-		}
-		~tree_node ()
-		{
-			erase_links();
-		}
-		
-		tree_node& operator= (const tree_node&) = delete;
-		tree_node& operator= (tree_node&& x)
-		{
-			if (this == &x)
-				return *this;
-			(T&&)*this = (T&&)x;
-
-			erase_links();
-			x.erase_links();
-
-			return *this;
-		}
-
-		friend class tree<T>;
-	private:
-		void erase_links () { left = nullptr; right = nullptr; }
+	int len;
+	int max;
 };
 
 template <typename T>
@@ -75,9 +47,43 @@ class tree
 
 		void print (unsigned int r = 10, FILE *fp = stdout) const
 		{
-			print_subtree(root, 0, r, fp);
+			if (root)
+				print_subtree(root, 0, r, fp);
 		}
-		io_status read (FILE *fp = stdin, unsigned int max_read = -1);
+
+		io_status read (FILE *fp = stdin, unsigned int max_read = -1)
+		{
+			tree_node<T> x;
+			io_status ret;
+
+			if (x.read(fp) != (ret = io_status::success))
+				return ret;
+
+			root = new tree_node<T>((tree_node<T>&&)x);
+			if (!root)
+				return io_status::memory;
+
+			unsigned int readed = 1;
+			while ((readed < max_read) && (x.read(fp) == io_status::success))
+			{
+				tree_node<T> *curr = new tree_node<T>((tree_node<T>&&)x);
+				if (!curr)
+				{
+					delete_subtree(root);
+					return io_status::memory;
+				}
+
+				add_node_subtree(root, curr);
+				readed++;
+			} if ((!feof(fp)) && (readed < max_read))
+			{
+				delete_subtree(root);
+				return io_status::format;
+			}
+
+			return io_status::success;
+		}
+
 		io_status read_file (char *filename, unsigned int max_read = -1)
 		{
 			FILE *fp = fopen(filename, "r");
@@ -90,21 +96,254 @@ class tree
 			return ret;
 		}
 
-        // Side
-        int num_level (int level);
-        int depth_tree (int *max_diff);
-        int find_min ();
-        int del_with_value (const int value);
+		// Task 1
+		static int number_leaves_in_subtree (const tree_node<T> * curr)
+		{
+			int count = 0,
+				is_end = 0;
 
-        // Solves
-        int t1_solve ();
-        int t2_solve ();
-        int t3_solve ();
-        int t4_solve ();
-        int t5_solve ();
-        int t6_solve ();
+			const tree_node<T> *prev = nullptr;
+			for (; curr ; prev = curr, curr = curr->right)
+			{
+				is_end = 0;
+		
+				tree_node<T> *left = curr->left;
+				if (left)
+					count += number_leaves_in_subtree(left);
+				else
+					is_end++;
+			}
+		
+			if (is_end)
+				count += prev->get_length();
+		
+			return count;
+		}
+
+        int t1_solve () const
+		{
+			return number_leaves_in_subtree(root);
+		}
+		
+		// Task 2
+		static int max_number_elem_in_branch_subtree (const tree_node<T> *curr)
+		{
+			int max_len = 0,
+				len = 0;
+
+			for (; curr ; curr = curr->right)
+			{
+				len += curr->get_length();
+
+				tree_node<T> *left = curr->left;
+				if (left)
+				{
+					int temp_len = len + max_number_elem_in_branch_subtree(left);
+					max_len = (max_len < temp_len) ? temp_len : max_len;
+				}
+			}
+
+			max_len = (max_len < len) ? len : max_len;
+
+			return max_len;
+		}
+
+        int t2_solve () const
+		{
+			return max_number_elem_in_branch_subtree(root);
+		}
+
+		// Task 3
+		static int num_level_subtree (const tree_node<T> *curr, int level)
+		{
+			int now = 0,
+				number = 0;
+
+			for (now = 1 ; (curr != nullptr) && (now < level) ; curr = curr->right, now++)
+				number += num_level_subtree(curr->left, level - now);
+
+			if ((curr != nullptr) && (level == now))
+				number += curr->get_length();
+
+			return number;
+		}
+
+        int t3_solve () const
+		{
+			int max_len = 0,
+				len = 0,
+				n = 1; // level
+
+			if (root == nullptr)
+				return 0;
+			
+			len = root->get_length();
+			max_len = len;
+
+			while (len != 0)
+			{
+				n++;
+				len = num_level_subtree(root, n);
+				max_len = (max_len < len) ? len : max_len;
+			}
+
+			return max_len;
+		}
+
+		// Task 4
+		static t_count max_diff_between_subtrees_of_subtree (const tree_node<T> *curr)
+		{
+			t_count answer = {},
+					temp = {};
+
+			if (curr->left)
+			{
+				temp = max_diff_between_subtrees_of_subtree(curr->left);
+				answer.max = temp.max;
+				answer.len += temp.len;
+			}
+
+			int diff = temp.len;
+
+			if (curr->right)
+			{
+				temp = max_diff_between_subtrees_of_subtree(curr->right);
+				answer.max = (answer.max < temp.max) ? temp.max : answer.max;
+				answer.len += temp.len;
+
+				diff -= temp.len;
+				diff = (diff < 0) ? -diff : diff;
+			}
+			
+			answer.max = (answer.max < diff) ? diff : answer.max;
+
+			answer.len += curr->get_length();
+
+			return answer;
+		}
+
+		int t4_solve () const
+		{
+			if (!root)
+				return 0;
+
+			return max_diff_between_subtrees_of_subtree(root).max;
+		}
+
+		// Task 5
+		static int get_length_all_nodes_with_1_child_in_subtree (const tree_node<T> *curr)
+		{
+			int count = 0;
+			
+			tree_node<T> *child = nullptr;
+			for (; curr ; curr = child)
+			{
+				tree_node<T> *right = curr->right;
+
+				child = curr->left;
+				if (child && right)
+				{
+					count += get_length_all_nodes_with_1_child_in_subtree(child);
+					child = right;
+				} else if (child)
+					count += curr->get_length();
+				else if (right)
+				{
+					count += curr->get_length();
+					child = right;
+				}
+			}
+
+			return count;
+		}
+
+		int t5_solve () const
+		{
+			return get_length_all_nodes_with_1_child_in_subtree(root);
+		}
+
+		// Task 6
+		// curr is non-nullptr
+		static int find_min_value_subtree (const tree_node<T> *curr)
+		{
+			int min_val = curr->get_min_value();
+
+			if (curr->left)
+			{
+				int temp_min = find_min_value_subtree(curr->left);
+				min_val = (temp_min < min_val) ? temp_min : min_val;
+			}
+
+			for (curr = curr->right; curr ; curr = curr->right)
+			{
+				int temp_min = curr->get_min_value();
+				min_val = (temp_min < min_val) ? temp_min : min_val;
+
+				tree_node<T> *left = curr->left;
+				if (left)
+				{
+					temp_min = find_min_value_subtree(curr->left);
+					min_val = (temp_min < min_val) ? temp_min : min_val;
+				}
+			}
+
+			return min_val;
+		}
+
+		int del_with_value (const int value)
+		{
+			int deleted = 0;
+
+			tree_node<T> *parent = nullptr,
+					  *curr = nullptr,
+					  *child = nullptr;
+			for (curr = root ; (curr != nullptr) ; parent = curr, curr = child)
+			{
+				child = nullptr;
+
+				if (curr->has_elem_equal_n(value))
+				{
+					deleted++;
+					delete_subtree(curr);
+					if (parent == nullptr)
+						root = nullptr;
+					else
+						parent->right = nullptr;
+				} else
+				{
+					child = curr->left;
+					if (child != nullptr)
+					{
+						tree<T> tmp;
+						tmp.root = child;
+						deleted += tmp.del_with_value(value);
+						if (tmp.root == nullptr)
+							curr->left = nullptr;
+						else
+							tmp.root = nullptr;
+					}
+
+					child = curr->right;
+				}
+			}
+
+			return deleted;
+		}
+
+		int t6_solve ()
+		{
+			int deleted = 0;
+
+			if (root == nullptr)
+				return 0;
+
+			int min_val = find_min_value_subtree(root);
+			deleted = del_with_value(min_val);
+
+			return deleted;
+		}
 	private:
-		static void delete_subtree (tree_node<T> *curr)
+		static void delete_subtree (tree_node<T> * curr)
         {
             if (curr == nullptr)
                 return;
@@ -112,15 +351,22 @@ class tree
             delete_subtree(curr->right);
             delete curr;
         }
-        static void print_subtree (tree_node<T> *curr, int level, int r, FILE *fp = stdout)
+        static void print_subtree (tree_node<T> * curr, int level, int r, FILE *fp = stdout)
         {
-            if ((!curr) || (level > r))
-                return;
             curr->print(fp, level);
+			
+			if (level + 1 > r)
+				return;
 
-            print_subtree(curr->left, level + 1, r, fp);
-			fprintf(fp, "\n");
-            print_subtree(curr->right, level + 1, r, fp);
+			if (curr->left)
+				print_subtree(curr->left, level + 1, r, fp);
+
+			if (curr->right)
+			{
+				if (curr->left)
+					fprintf(fp, "\n");
+				print_subtree(curr->right, level + 1, r, fp);
+			}
         }
         static void add_node_subtree (tree_node<T> *curr, tree_node<T> *x)
         {
@@ -139,5 +385,8 @@ class tree
             }
         }
 };
+
+extern template class tree<student>;
+extern template class tree<list2<student>>;
 
 #endif // TREE_H

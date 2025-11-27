@@ -276,7 +276,7 @@ class tree
 
 			for (curr = curr->right; curr ; curr = curr->right)
 			{
-				int temp_min = find_min_value_subtree(curr);
+				int temp_min = curr->get_min_value();
 				min_val = (temp_min < min_val) ? temp_min : min_val;
 
 				tree_node<T> *left = curr->left;
