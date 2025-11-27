@@ -1,50 +1,11 @@
 #ifndef LIST_H
 #define LIST_H
 
-template <typename T>
-class list2;
+#include "student.h"
+#include "list_node.h"
 
-template <typename T>
-class list2_node : public T
-{
-	private:
-		list2_node * next = nullptr;
-		list2_node * prev = nullptr;
-	public:
-		list2_node () = default;
-		~list2_node () { next = nullptr; prev = nullptr; }
-
-		list2_node (const list2_node&) = delete;
-		list2_node (list2_node&& r) : T((T&&)r)
-		{
-			prev = r.prev;
-			r.prev = nullptr;
-
-			next = r.next;
-			r.next = nullptr;
-		}
-
-		list2_node& operator= (const list2_node&) = delete;
-		list2_node& operator= (list2_node&& r)
-		{
-			*(T *)(this) = (T&&)r;
-			
-			prev = r.prev;
-			r.prev = nullptr;
-
-			next = r.next;
-			r.next = nullptr;
-			return *this;
-		}
-
-		list2_node * get_next () const { return next; }
-		list2_node * get_prev () const { return prev; }
-
-		void set_next (list2_node *r) { next = r; }
-		void set_prev (list2_node *r) { prev = r; }
-
-		friend class list2<T>;
-};
+#include <cstdio>
+#include <new>
 
 template <typename T>
 class list2
@@ -72,7 +33,57 @@ class list2
 			head = nullptr;
 		}
 
-		io_status read (FILE *fp = stdin);
+		io_status read (FILE *fp = stdin)
+		{
+			list2_node<T> buf,
+				*prev = nullptr,
+				*next = nullptr;
+			io_status ret;
+
+			erase();
+
+			if ((ret = buf.read(fp)) != io_status::success)
+				return ret;
+
+			head = new list2_node<T>;
+			if (head == nullptr)
+				return io_status::memory;
+
+			*head = (list2_node<T> &&)buf;
+			list2_node<T> *curr = head;
+	
+			int i = 0;
+			while ((buf.read(fp) == io_status::success) && (i < m))
+			{
+				next = new list2_node<T>;
+	
+				if (next == nullptr)
+				{
+					erase();
+					return io_status::memory;
+				}
+	
+				*next = (list2_node<T> &&)buf;
+		
+				curr->prev = prev;
+				curr->next = next;
+		
+				prev = curr;
+				curr = next;
+
+				i++;
+			} if ((!feof(fp)) && (i < m))
+			{
+				erase();
+				return io_status::format;
+			}
+
+			curr->prev = prev;
+			curr->next = nullptr;
+
+			return io_status::success;
+		}
+		
 		io_status read_file (char *filename)
 		{
 			FILE *fp = fopen(filename, "r");
@@ -90,7 +101,7 @@ class list2
 
 		void print (FILE *fp = stdout, int level = 0) const
 		{
-			unsigned int i = 0;
+			int i = 0;
 			for (const list2_node<T> *curr = head ; (curr && (i < r)) ; curr = curr->next)
 			{
 				curr->print(fp, level);
@@ -118,5 +129,7 @@ class list2
 			return 0;
 		}
 };
+
+extern template class list2<student>;
 
 #endif // LIST_H

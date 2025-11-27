@@ -4,6 +4,8 @@ WFLAGS = -O3 -mfpmath=sse -fstack-protector-all -g \
 -Wformat=1 -Wwrite-strings -Wno-long-long -Woverloaded-virtual \
 -Wnon-virtual-dtor -Wcast-qual -Wno-suggest-attribute=format -std=c++11
 
+LINK_FLAGS ?=
+
 ifeq ($(OS),Windows_NT)
 	EXE = exe
 	CLEAN = del
@@ -12,14 +14,17 @@ else
 	CLEAN = rm -f
 endif
 
-TARGET = a.$(EXE)
-OBJ = main.o tree.o t1_solve.o t2_solve.o t3_solve.o t4_solve.o t5_solve.o t6_solve.o 
+TARGET = a01.$(EXE)
+OBJ = main.o launch.o
 
 %.o: %.cpp
 	g++ $(WFLAGS) -c $< -o $@
 
 $(TARGET): $(OBJ)
-	g++ $(WFLAGS) $^ -o $@
+	g++ $(WFLAGS) $(LINK_FLAGS) $^ -o $@
+
+static: 
+	$(MAKE) LINK_FLAGS="-static"
 
 gdb: WFLAGS = -mfpmath=sse -fstack-protector-all -g -O0 -Wall -Wextra -Werror -std=c++11
 gdb: clean $(TARGET)

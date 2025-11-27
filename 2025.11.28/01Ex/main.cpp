@@ -1,83 +1,45 @@
+#include "student.h"
+#include "list.h"
 #include "tree.h"
-#include "io_status.h"
+#include "launch.h"
 
 #include <cstdio>
-#include <ctime>
-#include <new>
-#include <exception>
+
+template class list2_node<student>;
+template class list2<student>;
+
+template class tree_node<student>;
+template class tree<student>;
+
+template class tree_node< list2<student> >;
+template class tree< list2<student> >;
+
+template<>
+int list2<student>::r = 0;
+template<>
+int list2<student>::m = 0;
 
 int main(int argc, char *argv[])
 {
-	int r;
-	io_status ret;
-	double t = 0;
+	int r, m, res;
 
 	if (
-		!(argc == 3
-		&& sscanf(argv[1], "%d", &r) == 1)
+		!(argc == 4
+		&& sscanf(argv[1], "%d", &r) == 1
+		&& sscanf(argv[3], "%d", &m) == 1)
 	) {
-		printf("Usage %s r filename\n", argv[0]);
+		printf("Usage %s r filename m\n", argv[0]);
 		return 1;
 	}
 
-	tree *olha = new tree;
-    if (olha == nullptr)
-    {
-		fprintf (stderr, "Error: MEMORY -> tree is nullptr\n");
-        return 2;
-    }
+	res = launch<student>(argv[0], argv[2], r);
+	if (res)
+		return res;
 
-	ret = olha->read_file(argv[2]);
+	list2<student>::set_r(r);
+	list2<student>::set_m(m);
 
-	do {
-		switch (ret)
-		{
-			case io_status::success:
-				continue;
-			case io_status::open:
-				fprintf (stderr, "Error: Cannot open %s\n", argv[2]);
-				break;
-			case io_status::format:
-				fprintf (stderr, "Error: Wrong format of file %s\n", argv[2]);
-				break;
-			case io_status::eof:
-				fprintf (stderr, "Error: End of file %s\n", argv[2]);
-				break;
-			case io_status::memory:
-				fprintf (stderr, "Error: MEMORY\n");
-				break;
-		}
+	res = launch< list2<student> >(argv[0], argv[2], r);
 
-		delete olha;
-
-		return 3;
-	} while (0);
-
-	olha->print(r);
-
-    int (tree::*solves[])() = {
-        &tree::t1_solve,
-        &tree::t2_solve,
-        &tree::t3_solve,
-        &tree::t4_solve,
-        &tree::t5_solve,
-        &tree::t6_solve,
-    };
-    int len = sizeof(solves) / sizeof(solves[0]);
-
-    int res = 0;
-    for (int i = 0 ; i < len ; ++i)
-    {
-	    t = clock();
-        res = (olha->*solves[i])();
-        t = (clock() - t) / CLOCKS_PER_SEC;
-
-	    fprintf(stdout, "%s : Task = %d Result = %d Elapsed = %.2f\n", argv[0], i + 1, res, t);
-    }
-
-	olha->print(r);
-		
-	delete olha;
-
-	return 0;
+	return res;
 }
