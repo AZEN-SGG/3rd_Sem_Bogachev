@@ -26,7 +26,8 @@ int main(int argc, char *argv[])
 	if (
 		!(argc == 4
 		&& sscanf(argv[1], "%d", &r) == 1
-		&& sscanf(argv[3], "%d", &m) == 1)
+		&& sscanf(argv[3], "%d", &m) == 1
+		&& (m > 0))
 	) {
 		printf("Usage %s r filename m\n", argv[0]);
 		return 1;

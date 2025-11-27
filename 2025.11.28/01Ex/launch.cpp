@@ -1,7 +1,7 @@
 #include "launch.h"
 
 template <typename T>
-int launch (char * path, char * filename, int r)
+int launch (char * path, char * filename, int r, int m)
 {
 	tree<T> *olha = new tree<T>;
     if (!olha)
@@ -36,6 +36,7 @@ int launch (char * path, char * filename, int r)
 		return 3;
 	} while (0);
 
+	fprintf (stdout, "Original tree:\n");
 	olha->print(r);
 
     int (tree<T>::*solves[])() const = {
@@ -51,9 +52,10 @@ int launch (char * path, char * filename, int r)
         res = (olha->*solves[i])();
         t = (clock() - t) / CLOCKS_PER_SEC;
 
-	    fprintf(stdout, "%s : Task = %d Result = %d Elapsed = %.2f\n", path, i + 1, res, t);
+	    fprintf(stdout, "%s : Task = %d M = %d Result = %d Elapsed = %.2f\n", path, i + 1, m, res, t);
     }
 
+	fprintf (stdout, "Modified tree:\n");
 	olha->print(r);
 		
 	delete olha;
@@ -61,6 +63,6 @@ int launch (char * path, char * filename, int r)
 	return 0;
 }
 
-template int launch<student>(char *, char *, int);
-template int launch< list2<student> >(char *, char *, int);
+template int launch<student>(char *, char *, int, int);
+template int launch< list2<student> >(char *, char *, int, int);
 

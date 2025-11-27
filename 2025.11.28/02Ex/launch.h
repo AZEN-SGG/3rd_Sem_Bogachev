@@ -8,6 +8,6 @@
 #include <new>
 
 template <typename T>
-int launch (char * path, char * filename, int r = 10);
+int launch (char * path, char * filename, int r = 10, int m = 0);
 
 #endif // LAUNCH_H
