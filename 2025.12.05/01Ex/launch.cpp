@@ -1,7 +1,7 @@
 #include "launch.h"
 
 template <typename T>
-int launch (char * path, char * filename, const int m, const int k, int r = 10)
+int launch (char * path, char * filename, const int m, const int k, int r)
 {
 	b_tree<T> *olha = new b_tree<T>{m};
     if (!olha)
@@ -10,6 +10,7 @@ int launch (char * path, char * filename, const int m, const int k, int r = 10)
         return 2;
     }
 
+	fprintf(stdout, "path: %s and k = %d\n", path, k);
 	io_status ret = olha->read_file(filename);
 
 	do {
@@ -42,6 +43,7 @@ int launch (char * path, char * filename, const int m, const int k, int r = 10)
 	fprintf (stdout, "Original tree:\n");
 	olha->print(r);
 
+	/*
     int (b_tree<T>::*solves[])(const int) const = {
         &tree<T>::t1_solve,
     };
@@ -58,10 +60,11 @@ int launch (char * path, char * filename, const int m, const int k, int r = 10)
 	    fprintf(stdout, "%s : Task = %d M = %d K = %d Result = %d Elapsed = %.2f\n", path, i + 1, m, k, res, t);
     }
 
+	*/
 	delete olha;
 
 	return 0;
 }
 
-template int launch<student>(char *, char *, int, int);
+template int launch<student>(char *, char *, int, int, int);
 

@@ -2,7 +2,7 @@
 #include "launch.h"
 
 #include "b_tree.h"
-#include "t1_solve.h"
+// #include "t1_solve.h"
 
 #include <cstdio>
 
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	res = launch<student>(argv[0], argv[2], m, k, r);
+	res = launch<student>(argv[0], argv[4], m, k, r);
 
 	return res;
 }

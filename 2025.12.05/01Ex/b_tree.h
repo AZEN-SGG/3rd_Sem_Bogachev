@@ -30,16 +30,13 @@ class b_tree
 
 			while ((readed < max_read) && (x.read(fp) == io_status::success))
 			{
-				T *curr = new T((T&&)x);
-				if (!curr)
+				if ((ret = add_value(x)) != io_status::success)
 				{
 					delete_subtree(root);
 					erase_links();
 
 					return io_status::memory;
 				}
-
-				add_value(curr);
 				readed++;
 			} if ((!feof(fp)) && (readed < max_read))
 			{
@@ -94,7 +91,7 @@ class b_tree
 			delete curr;
 		}
 		
-		static void print_subtree (b_tree_node<T> *curr, int level, int r, FILE *fp = stdout) const
+		static void print_subtree (const b_tree_node<T> *curr, int level, int r, FILE *fp = stdout)
 		{
 			if (curr == nullptr || level > r)
 				return;
@@ -116,10 +113,10 @@ class b_tree
 		{
 			io_status ret = io_status::success;
 
-			if (root = nullptr)
+			if (root == nullptr)
 			{
 				root = new b_tree_node<T>();
-				if (root = nullptr)
+				if (root == nullptr)
 					return io_status::memory;
 
 				if ((ret = root->init(m)) != io_status::success)
@@ -141,7 +138,7 @@ class b_tree
 				return ret;
 
 			b_tree_node<T> *p = new b_tree_node<T>();
-			if (p = nullptr)
+			if (p == nullptr)
 				return io_status::memory;
 
 			if ((ret = p->init(m)) != io_status::success)
@@ -163,7 +160,7 @@ class b_tree
 		static io_status add_value_subtree (b_tree_node<T> *&curr, b_tree_node<T> *&down, T &x, int m)
 		{
 			int index = curr->bin_search(x);
-			b_tree_node<t> *p = curr->children[index];
+			b_tree_node<T> *p = curr->children[index];
 
 			if (p != nullptr)
 			{
@@ -183,7 +180,8 @@ class b_tree
 				if (p == nullptr)
 					return io_status::memory;
 
-				if ((io_status ret = p->init(m)) != io_status::success)
+				io_status ret;
+				if ((ret = p->init(m)) != io_status::success)
 				{
 					delete p;
 					return ret;

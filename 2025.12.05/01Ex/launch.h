@@ -2,6 +2,7 @@
 #define LAUNCH_H
 
 #include "io_status.h"
+#include "student.h"
 #include "b_tree.h"
 
 #include <ctime>

@@ -20,7 +20,7 @@ class b_tree_node
 		b_tree_node () = default;
 		~b_tree_node () { delete_node(); }
 
-		b_tree_node (const b_tree_nnode &x) = delete;
+		b_tree_node (const b_tree_node &x) = delete;
 		b_tree_node (b_tree_node &&x)
 		{
 			values = x.values;
@@ -45,7 +45,7 @@ class b_tree_node
 			return *this;
 		}
 		
-		void print (int p = 0, FILE *fp = stdout)
+		void print (int p = 0, FILE *fp = stdout) const
 		{
 			for (int i = 0 ; i < size ; ++i)
 			{
