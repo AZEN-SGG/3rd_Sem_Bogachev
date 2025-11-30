@@ -5,7 +5,6 @@
 
 int main(int argc, char *argv[])
 {
-	/* ./a05.out m r k filename */
 	int m, r, k, res;
 
 	if (
