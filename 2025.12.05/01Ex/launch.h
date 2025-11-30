@@ -3,7 +3,9 @@
 
 #include "io_status.h"
 #include "student.h"
+
 #include "b_tree.h"
+#include "t1_solve.h"
 
 #include <ctime>
 #include <new>

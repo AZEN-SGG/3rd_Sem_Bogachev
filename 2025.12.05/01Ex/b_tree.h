@@ -66,6 +66,9 @@ class b_tree
 			print_subtree (root, 0, r, fp);
 		}
 
+		// Solve 1
+		static int get_number_elem_in_nodes_with_k_children (const b_tree_node<T> *curr, const int k);
+
 		// Solves
 		int t1_solve (const int k) const;
 		int t2_solve (const int k) const;

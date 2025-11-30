@@ -1,9 +1,6 @@
 #include "student.h"
 #include "launch.h"
 
-#include "b_tree.h"
-// #include "t1_solve.h"
-
 #include <cstdio>
 
 int main(int argc, char *argv[])
