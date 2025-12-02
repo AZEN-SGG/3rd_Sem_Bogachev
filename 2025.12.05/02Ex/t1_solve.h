@@ -28,7 +28,7 @@ int b_tree<T>::t1_solve (const int k) const
 	if (!root)
 		return 0;
 	
-	if (k < m + 1)
+	if (k != 0 && k < m + 1)
 	{
 		int number = 0;
 
