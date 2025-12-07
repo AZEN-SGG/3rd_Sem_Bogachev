@@ -3,43 +3,17 @@
 #include "rb_tree.h"
 
 template <typename T>
-int rb_tree<T>::get_number_elem_on_level (const rb_tree_node<T> *root, int level)
+int rb_tree<T>::get_number_elem_on_level (const rb_tree_node<T> *curr, const int level)
 {
-	const rb_tree_node<T> *curr = root;
-	int number = 0,
-		flag = 0;
+	if (!level)
+		return 1;
 
-	if (!root)
-		return 0;
+	int number = 0;
+	if (curr->left)
+		number += get_number_elem_on_level(curr->left, level - 1);
 
-	while (curr != root->parent)
-	{
-		if (!level)
-		{
-			number++;
-
-			flag = 1 + (curr->parent && (curr == curr->parent->right));
-			curr = curr->parent;
-			level++;
-		} else
-		{
-			if (curr->left && flag == 0)
-			{
-				curr = curr->left;
-				level--;
-			} else if (curr->right && flag != 2)
-			{
-				flag = 0;
-				curr = curr->right;
-				level--;
-			} else
-			{
-				flag = 1 + (curr->parent && (curr == curr->parent->right));
-				curr = curr->parent;
-				level++;
-			}
-		}
-	}
+	if (curr->right)
+		number += get_number_elem_on_level(curr->right, level - 1);
 
 	return number;
 }
