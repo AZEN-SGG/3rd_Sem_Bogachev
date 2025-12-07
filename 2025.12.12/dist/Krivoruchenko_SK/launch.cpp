@@ -1,9 +1,9 @@
 #include "launch.h"
 
 template <typename T>
-int launch (char * path, char * filename, const int m, const int k, int r)
+int launch (char * path, char * filename, const int k, int r)
 {
-	b_tree<T> *olha = new b_tree<T>{m};
+	rb_tree<T> *olha = new rb_tree<T>;
     if (!olha)
     {
 		fprintf (stderr, "Error: MEMORY -> tree is nullptr\n");
@@ -30,7 +30,7 @@ int launch (char * path, char * filename, const int m, const int k, int r)
 				fprintf (stderr, "Error: MEMORY\n");
 				break;
 			case io_status::create:
-				fprintf (stderr, "Error: Create, how is it possible?!\n");
+				fprintf (stderr, "Error: Create, how is it possible?!\n"); // it is impossible...
 				break;
 		}
 
@@ -42,13 +42,12 @@ int launch (char * path, char * filename, const int m, const int k, int r)
 	fprintf (stdout, "Original tree:\n");
 	olha->print(r);
 
-    int (b_tree<T>::*solves[])(const int) const = {
-        &b_tree<T>::t1_solve,
-        &b_tree<T>::t2_solve,
-        &b_tree<T>::t3_solve,
-        &b_tree<T>::t4_solve,
-        &b_tree<T>::t5_solve,
-        &b_tree<T>::t6_solve,
+    int (rb_tree<T>::*solves[])(const int) const = {
+        &rb_tree<T>::t1_solve,
+        &rb_tree<T>::t2_solve,
+        &rb_tree<T>::t3_solve,
+        &rb_tree<T>::t4_solve,
+        &rb_tree<T>::t5_solve,
     };
     int len = sizeof(solves) / sizeof(solves[0]);
 
@@ -60,7 +59,7 @@ int launch (char * path, char * filename, const int m, const int k, int r)
         res = (olha->*solves[i])(k);
         t = (clock() - t) / CLOCKS_PER_SEC;
 
-	    fprintf(stdout, "%s : Task = %d M = %d K = %d Result = %d Elapsed = %.2f\n", path, i + 1, m, k, res, t);
+	    fprintf(stdout, "%s : Task = %d K = %d Result = %d Elapsed = %.2f\n", path, i + 1, k, res, t);
     }
 
 	delete olha;
@@ -68,5 +67,5 @@ int launch (char * path, char * filename, const int m, const int k, int r)
 	return 0;
 }
 
-template int launch<student>(char *, char *, int, int, int);
+template int launch<student>(char *, char *, int, int);
 

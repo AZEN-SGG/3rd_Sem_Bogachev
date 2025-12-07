@@ -1,36 +1,36 @@
 #pragma once
 
-#include "b_tree.h"
+#include "rb_tree.h"
 
 template <typename T>
-t_count b_tree<T>::get_number_elem_in_subtrees_with_less_k_nodes (const b_tree_node<T> *curr, const int k)
+int rb_tree<T>::get_number_elem_in_subtrees_with_level_less_k (const rb_tree_node<T> *curr, const int k, int &level)
 {
-	t_count answer{};
+	int number = 1,
+		left_level = 0,
+		right_level = 0;
 
-	for (int i = 0 ; i <= curr->size ; ++i)
-	{
-		if (!curr->children[i])
-			break;
+	if (curr->left)
+		number += get_number_elem_in_subtrees_with_level_less_k(curr->left, k, left_level);
 
-		t_count temp = get_number_elem_in_subtrees_with_less_k_nodes(curr->children[i], k);
-		answer.answer += temp.answer;
-		answer.count += temp.count;
-	}
+	if (curr->right)
+		number += get_number_elem_in_subtrees_with_level_less_k(curr->right, k, right_level);
 
-	answer.count++;
+	level = 1 + ((left_level < right_level) ? right_level : left_level);
 
-	if (answer.count <= k)
-		answer.answer += curr->size;
+	if (level > k)
+		number--;
 
-	return answer;
+	return number;
 }
 
 template <typename T>
-int b_tree<T>::t2_solve (const int k) const
+int rb_tree<T>::t2_solve (const int k) const
 {
-	if (!root)
+	if (!root || k < 1)
 		return 0;
+
+	int level = 0;
 	
-	return get_number_elem_in_subtrees_with_less_k_nodes(root, k).answer;
+	return get_number_elem_in_subtrees_with_level_less_k(root, k, level);
 }
 

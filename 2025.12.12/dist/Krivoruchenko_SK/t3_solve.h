@@ -1,44 +1,49 @@
 #pragma once
 
-#include "b_tree.h"
+#include "rb_tree.h"
 
 template <typename T>
-int b_tree<T>::get_depth_subtree (const b_tree_node<T> *curr)
+int rb_tree<T>::get_number_elem_in_subtrees_with_less_k_nodes_in_each_level (const rb_tree_node<T> *curr, const int k, int &count)
 {
-	int depth;
-	for (depth = 0 ; curr ; curr = curr->children[0], depth++);
-	return depth;
-}
+	int	left_count = 0,
+		right_count = 0,
+		left_number = 0,
+		right_number = 0;
 
-template <typename T>
-int b_tree<T>::get_number_elem_in_subtrees_with_less_k_levels (const b_tree_node<T> *curr, const int k, const int level)
-{
-	int count = 0;
+	if (curr->left)
+		left_number = get_number_elem_in_subtrees_with_less_k_nodes_in_each_level(curr->left, k, left_count);
 
-	for (int i = 0 ; i <= curr->size ; ++i)
+	if (curr->right)
+		right_number = get_number_elem_in_subtrees_with_less_k_nodes_in_each_level(curr->right, k, right_count);
+
+	int number = left_number + right_number;
+
+	if ((left_number == left_count) &&
+		(right_number == right_count))
 	{
-		if (!curr->children[i])
-			break;
+		int number_on_level = 1,
+			level = 0;
+		while ((number_on_level <= k) && (number_on_level))
+		{
+			level++;
+			number_on_level = get_number_elem_on_level(curr, level);
+		}
 
-		count += get_number_elem_in_subtrees_with_less_k_levels(curr->children[i], k, level - 1);
+		number += (number_on_level == 0);
 	}
 
-	if (level <= k)
-		count += curr->size;
+	count = left_count + right_count + 1;
 
-	return count;
+	return number;
 }
 
 template <typename T>
-int b_tree<T>::t3_solve (const int k) const
+int rb_tree<T>::t3_solve (const int k) const
 {
-	int depth = get_depth_subtree(root);
-	if (!depth)
+	if (!root || k < 1)
 		return 0;
-	
-	if (depth == 1 && depth <= k)
-		return root->size;
-	
-	return get_number_elem_in_subtrees_with_less_k_levels(root, k, depth);
+
+	int count = 0;
+	return get_number_elem_in_subtrees_with_less_k_nodes_in_each_level(root, k, count);
 }
 

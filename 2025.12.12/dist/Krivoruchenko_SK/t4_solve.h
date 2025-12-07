@@ -1,70 +1,55 @@
 #pragma once
 
-#include "b_tree.h"
+#include "rb_tree.h"
 
 template <typename T>
-int b_tree<T>::get_number_nodes_on_level_subtree (const b_tree_node<T> *curr, const int level)
+int rb_tree<T>::get_number_elem_on_level (const rb_tree_node<T> *root, int level)
 {
-	if (!level)
-		return 1;
+	const rb_tree_node<T> *curr = root;
+	int number = 0,
+		flag = 0;
 
-	int number = 0;
+	if (!root)
+		return 0;
 
-	for (int i = 0 ; i <= curr->size ; ++i)
+	while (curr != root->parent)
 	{
-		if (!curr->children[i])
-			break;
+		if (!level)
+		{
+			number++;
 
-		number += get_number_nodes_on_level_subtree(curr->children[i], level - 1);
+			flag = 1 + (curr->parent && (curr == curr->parent->right));
+			curr = curr->parent;
+			level++;
+		} else
+		{
+			if (curr->left && flag == 0)
+			{
+				curr = curr->left;
+				level--;
+			} else if (curr->right && flag != 2)
+			{
+				flag = 0;
+				curr = curr->right;
+				level--;
+			} else
+			{
+				flag = 1 + (curr->parent && (curr == curr->parent->right));
+				curr = curr->parent;
+				level++;
+			}
+		}
 	}
 
 	return number;
 }
 
 template <typename T>
-t_count b_tree<T>::get_number_elem_in_subtrees_with_less_k_nodes_in_level (const b_tree_node<T> *curr, const int k, int &count, const int depth)
+int rb_tree<T>::t4_solve (const int k) const
 {
-	t_count answer{};
-
-	for (int i = 0 ; i <= curr->size ; ++i)
-	{
-		if (!curr->children[i])
-			break;
-
-		int temp_count = 0;
-		t_count temp = get_number_elem_in_subtrees_with_less_k_nodes_in_level(curr->children[i], k, temp_count, depth - 1);
-		answer.answer += temp.answer; // Number elements
-		answer.count += temp.count; // Number of suitable nodes
-		count += temp_count; // Number of all nodes in subtree
-	}
-	
-	if (count++ != answer.count)
-		return answer;
-
-	for (int i = 0 ; i < depth ; ++i)
-	{
-		int number = get_number_nodes_on_level_subtree(curr, i);
-
-		if (number > k)
-			return answer;
-	}
-
-	answer.answer += curr->size;
-	answer.count++;
-
-	return answer;
-}
-
-template <typename T>
-int b_tree<T>::t4_solve (const int k) const
-{
-	if (!root)
+	if (k < 0)
 		return 0;
 
-	// from Solve 3
-	int depth = get_depth_subtree(root),
-		count = 0;
-
-	return get_number_elem_in_subtrees_with_less_k_nodes_in_level(root, k, count, depth).answer;
+	return get_number_elem_on_level(root, k);
 }
 

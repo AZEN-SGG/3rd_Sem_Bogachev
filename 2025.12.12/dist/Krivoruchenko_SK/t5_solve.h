@@ -1,32 +1,51 @@
 #pragma once
 
-#include "b_tree.h"
+#include "rb_tree.h"
 
 template <typename T>
-int b_tree<T>::get_number_elem_on_level_subtree (const b_tree_node<T> *curr, const int level)
+int rb_tree<T>::get_black_length (const rb_tree_node<T> *curr)
 {
-	if (!level)
-		return curr->size;
-
 	int number = 0;
 
-	for (int i = 0 ; i <= curr->size ; ++i)
-	{
-		if (!curr->children[i])
-			break;
+	for (; curr ; curr = curr->left)
+		number += (curr->color == rb_tree_node<T>::colors::black);
 
-		number += get_number_elem_on_level_subtree(curr->children[i], level - 1);
+	return number;
+}
+
+template <typename T>
+int rb_tree<T>::get_number_elem_on_branch_length_k (const rb_tree_node<T> *curr, const int k)
+{
+	int number = 0;
+
+	if (k <= 0)
+	{
+		if ((!curr->left) && (!curr->right))
+			number = 1;
+	} else
+	{
+		if (curr->left)
+			number += get_number_elem_on_branch_length_k(curr->left, k - 1);
+
+		if (curr->right)
+			number += get_number_elem_on_branch_length_k(curr->right, k - 1);
+		
+		number += (number != 0);
 	}
 
 	return number;
 }
 
 template <typename T>
-int b_tree<T>::t5_solve (const int k) const
+int rb_tree<T>::t5_solve (const int k) const
 {
-	if (!root)
+	if (k < 0)
 		return 0;
 
-	return get_number_elem_on_level_subtree(root, k);
+	int black_length = get_black_length(root);
+	if (black_length > k)
+		return 0;
+
+	return get_number_elem_on_branch_length_k(root, k - 1);
 }
 
